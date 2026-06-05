@@ -37,7 +37,7 @@
         <h2 id="kcom-overview" class="section-title">Overview</h2>
         <p>
           스타벅스 사이렌 오더에서 모티브를 얻은 전국 프랜차이즈 스마트 오더 시스템입니다.
-          주문 서비스, 매장 서비스, 결제 서비스가 Kafka(KRaft 모드)로 연결된 마이크로서비스 아키텍처를 개인 프로젝트로 깊이 탐구했습니다.
+          주문·재고·알림 처리를 Kafka(KRaft 모드) 이벤트로 연결한 이벤트 드리븐 분산 아키텍처를 개인 프로젝트로 깊이 탐구했습니다.
           Transactional Outbox 패턴으로 주문과 이벤트 발행의 원자성을 보장하고, Redis ZUNIONSTORE로 7일 슬라이딩 윈도우 인기 메뉴 집계를 구현해 응답속도를 +80% 향상시켰습니다.
         </p>
       </section>

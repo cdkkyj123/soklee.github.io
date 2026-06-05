@@ -36,7 +36,7 @@
       <section class="detail__block reveal" aria-labelledby="r7-overview">
         <h2 id="r7-overview" class="section-title">Overview</h2>
         <p>
-          개발자와 클라이언트를 연결하는 프리랜서 매칭 플랫폼으로, 프로젝트 지원·계약·실시간 채팅·결제를 하나의 서비스에서 처리합니다.
+          개발자와 클라이언트를 연결하는 프리랜서 매칭 플랫폼으로, 프로젝트 등록·개발자 제안·실시간 채팅·리뷰를 하나의 서비스에서 처리합니다.
           5인 팀 리더로서 전체 아키텍처 설계와 기술 선택, 코드 리뷰, AWS 배포 파이프라인을 총괄했습니다.
           동시성 제어, 검색 성능, 실시간 채팅, 무중단 배포 네 가지 핵심 기술 문제를 직접 정의하고 정량 수치로 검증해 해결했습니다.
         </p>
@@ -88,11 +88,11 @@
         </article>
 
         <article class="chapter reveal">
-          <h3>4. 무중단 배포 — AWS ALB Blue-Green</h3>
+          <h3>4. 무중단 배포 — AWS ALB 롤링 배포 (EC2×2)</h3>
           <p><strong>문제:</strong> 코드 배포 시 서비스 중단(다운타임) 발생. 운영 중 배포 불가.</p>
-          <p><strong>기술 선택:</strong> AWS ALB(Application Load Balancer) + EC2 2대로 Blue-Green 배포 구성. App1(Blue) 배포 완료 후 트래픽 전환, App2(Green) 순차 교체 방식.</p>
+          <p><strong>기술 선택:</strong> AWS ALB(Application Load Balancer) + EC2 2대로 롤링 배포 구성. ALB가 App2로 트래픽 유지 중 App1을 Docker로 업데이트·재기동, 완료 후 양쪽 서빙으로 전환 뒤 App2 순차 업데이트 방식.</p>
           <p><strong>결과:</strong> Zero downtime 달성. 배포 중 서비스 중단 없이 운영 가능.</p>
-          <div class="metric mono">Zero downtime</div>
+          <div class="metric mono">Zero downtime — 롤링 배포</div>
         </article>
 
       </section>
@@ -111,7 +111,7 @@
           </div>
           <div class="metric-card reveal">
             <span class="metric mono">Zero</span>
-            <span class="metric__label">무중단 배포 (ALB Blue-Green)</span>
+            <span class="metric__label">무중단 롤링 배포 (ALB + EC2×2)</span>
           </div>
           <div class="metric-card reveal">
             <span class="metric mono">5인</span>
