@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="정량 성과로 증명하는 백엔드 개발자 이석형(Sok)의 포트폴리오 — 분산 시스템 · 이벤트 드리븐 아키텍처">
+  <meta property="og:title" content="이석형 (Sok) — Backend Engineer Portfolio">
+  <meta property="og:description" content="정량 성과로 증명하는 백엔드 개발자 이석형(Sok)의 포트폴리오">
+  <title>이석형 (Sok) — Backend Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- 고정 상단 내비 -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a class="nav__brand" href="#hero">이석형 <span>Sok</span></a>
+      <button class="nav__hamburger" id="navToggle"
+              aria-label="메뉴 열기"
+              aria-expanded="false"
+              aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__menu" id="nav-menu" aria-label="주요 섹션">
+        <a class="nav__link" href="#about">About</a>
+        <a class="nav__link" href="#skills">Skills</a>
+        <a class="nav__link" href="#featured">Featured</a>
+        <a class="nav__link" href="#projects">Projects</a>
+        <a class="nav__link" href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Section 1: Hero -->
+    <section class="hero" id="hero">
+      <div class="container hero__inner">
+        <p class="hero__eyebrow">Backend Engineer · 분산 시스템</p>
+        <h1 class="hero__title reveal">
+          정량 성과로 증명하는<br>
+          <span class="accent">백엔드 개발자</span>
+        </h1>
+        <p class="hero__sub reveal">분산 시스템 · 이벤트 드리븐 아키텍처 · 수치로 말하는 기술 선택</p>
+        <p class="hero__stack mono reveal">Java / Spring Boot · Kafka · Redis · AWS</p>
+        <div class="hero__cta reveal">
+          <a class="btn btn--primary" href="#featured">프로젝트 보기</a>
+          <a class="btn btn--ghost" href="https://github.com/cdkkyj123" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+      </div>
+      <a class="hero__scroll" href="#about" aria-label="아래로 스크롤">↓</a>
+    </section>
+
+    <!-- Section 2: About -->
+    <section class="section" id="about">
+      <div class="container">
+        <h2 class="section-title reveal">About</h2>
+        <p class="about__intro reveal">
+          분산 시스템과 이벤트 드리븐 아키텍처를 전문으로 하는 백엔드 개발자입니다.
+          모든 기술 선택에 k6 부하 테스트와 벤치마크 수치를 병기하여 "정량 성과로 증명"하는 개발 문화를 추구합니다.
+          Ready's7 팀 리더로서 동시성 제어·검색 성능·무중단 배포 등 실전 분산 시스템 문제를 직접 설계하고 해결했습니다.
+        </p>
+        <div class="grid grid--3">
+
+          <article class="card strength reveal">
+            <span class="strength__icon">🔗</span>
+            <h3>분산 시스템</h3>
+            <p>Kafka·Redis 기반 이벤트 소싱과 분산 락(Redisson tryLock)을 실전 프로젝트에 적용. Transactional Outbox 패턴으로 원자성 보장.</p>
+          </article>
+
+          <article class="card strength reveal">
+            <span class="strength__icon">📈</span>
+            <h3>성과 중심</h3>
+            <p>MySQL FULLTEXT + ngram 파서 도입으로 검색 성능 +74%(230ms→56ms) 달성. 모든 최적화를 k6 부하 테스트로 검증.</p>
+          </article>
+
+          <article class="card strength reveal">
+            <span class="strength__icon">👥</span>
+            <h3>팀 리더십</h3>
+            <p>5인 팀 리더로 전체 아키텍처 설계·기술 선택·코드 리뷰 총괄. POCAT 프로젝트에서 14개 ADR 작성으로 의사결정 문서화.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Skills -->
+    <section class="section section--alt" id="skills">
+      <div class="container">
+        <h2 class="section-title reveal">Skills</h2>
+
+        <div class="skills__group reveal">
+          <h3 class="skills__cat">백엔드</h3>
+          <div class="tag-list">
+            <span class="tag">Java 17</span>
+            <span class="tag">Spring Boot 3.5</span>
+            <span class="tag">Spring Security</span>
+            <span class="tag">JPA / QueryDSL</span>
+            <span class="tag">REST API</span>
+          </div>
+        </div>
+
+        <div class="skills__group reveal">
+          <h3 class="skills__cat">분산 · 인프라</h3>
+          <div class="tag-list">
+            <span class="tag">Kafka (KRaft)</span>
+            <span class="tag">Redis (Redisson/Watchdog)</span>
+            <span class="tag">Elasticsearch</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">AWS (EC2/RDS/ALB/Route53)</span>
+            <span class="tag">Docker</span>
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">ShedLock</span>
+            <span class="tag">Resilience4j</span>
+          </div>
+        </div>
+
+        <div class="skills__group reveal">
+          <h3 class="skills__cat">프론트엔드</h3>
+          <div class="tag-list">
+            <span class="tag">React</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">HTML / CSS / JS</span>
+          </div>
+        </div>
+
+        <div class="skills__group reveal">
+          <h3 class="skills__cat">도구 · 방법론</h3>
+          <div class="tag-list">
+            <span class="tag">k6</span>
+            <span class="tag">ADR</span>
+            <span class="tag">Git</span>
+            <span class="tag">Obsidian</span>
+            <span class="tag">Claude Code</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 4: Featured — Ready's7 -->
+    <section class="section" id="featured">
+      <div class="container">
+        <span class="badge badge--featured">Featured</span>
+        <h2 class="section-title reveal">Ready's7</h2>
+        <div class="featured__grid">
+
+          <div class="featured__text reveal">
+            <p class="featured__role">팀 리더 · 백엔드 · 2024</p>
+            <p class="featured__desc">개발자와 클라이언트를 연결하는 프리랜서 매칭 플랫폼. 동시성 제어·검색 성능·실시간 채팅·무중단 배포를 직접 설계하고 정량 수치로 검증.</p>
+            <div class="tag-list">
+              <span class="tag">Java 17</span>
+              <span class="tag">Spring Boot</span>
+              <span class="tag">React / TS</span>
+              <span class="tag">MySQL</span>
+              <span class="tag">Redis (Redisson)</span>
+              <span class="tag">WebSocket</span>
+              <span class="tag">AWS</span>
+              <span class="tag">k6</span>
+            </div>
+            <div class="featured__cta">
+              <a class="btn btn--primary" href="./projects/readys7.html">자세히 보기 →</a>
+              <a class="btn btn--ghost" href="https://github.com/Ready-s7/Readys7-project" target="_blank" rel="noopener">GitHub →</a>
+            </div>
+          </div>
+
+          <div class="featured__metrics">
+            <div class="metric-card reveal">
+              <span class="metric mono">+74%</span>
+              <span class="metric__label">FULLTEXT 검색 성능 (230ms→56ms)</span>
+            </div>
+            <div class="metric-card reveal">
+              <span class="metric mono">100→10</span>
+              <span class="metric__label">동시 100요청, 정확히 10건 승인 (Redisson tryLock)</span>
+            </div>
+            <div class="metric-card reveal">
+              <span class="metric mono">Zero</span>
+              <span class="metric__label">무중단 배포 (ALB Blue-Green)</span>
+            </div>
+            <div class="metric-card reveal">
+              <span class="metric mono">5인</span>
+              <span class="metric__label">팀 리더 · 전체 아키텍처 총괄</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Projects Grid -->
+    <section class="section section--alt" id="projects">
+      <div class="container">
+        <h2 class="section-title reveal">Projects</h2>
+        <div class="grid grid--2">
+
+          <!-- POCAT -->
+          <article class="card project reveal">
+            <div class="project__head">
+              <h3>POCAT</h3>
+              <span class="badge badge--wip">개발중</span>
+            </div>
+            <p class="project__desc">포켓몬 카드 실시간 경매·거래 플랫폼. Kafka 이벤트 드리븐 아키텍처, Spring AI(Gemini) 가격 추정, Resilience4j 서킷 브레이커 적용.</p>
+            <div class="tag-list">
+              <span class="tag">Spring Boot</span>
+              <span class="tag">Kafka</span>
+              <span class="tag">Elasticsearch</span>
+              <span class="tag">Spring AI</span>
+            </div>
+            <div class="project__metrics">517 commits · 14 ADR</div>
+            <div class="project__links">
+              <a class="btn btn--ghost" href="./projects/pocat.html">자세히 →</a>
+              <a class="btn btn--ghost" href="https://github.com/POCAT-sparta/pocat" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </article>
+
+          <!-- K-Com -->
+          <article class="card project reveal">
+            <div class="project__head">
+              <h3>K-Com</h3>
+              <span class="badge badge--solo">개인 프로젝트</span>
+            </div>
+            <p class="project__desc">스타벅스 사이렌 오더 모티브, 전국 프랜차이즈 분산 스마트 오더 시스템. Transactional Outbox 패턴으로 Kafka 장애 시에도 주문 원자성 보장.</p>
+            <div class="tag-list">
+              <span class="tag">Spring Boot 3.5</span>
+              <span class="tag">Kafka (KRaft)</span>
+              <span class="tag">Redis (Watchdog)</span>
+              <span class="tag">ShedLock</span>
+            </div>
+            <div class="project__metrics">Redis 응답속도 +80%</div>
+            <div class="project__links">
+              <a class="btn btn--ghost" href="./projects/kcom.html">자세히 →</a>
+              <a class="btn btn--ghost" href="https://github.com/cdkkyj123/k-com-project" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: 차별화 -->
+    <section class="section" id="differentiation" aria-labelledby="differentiation-title">
+      <div class="container">
+        <h2 id="differentiation-title" class="section-title reveal">차별화</h2>
+        <div class="grid grid--3">
+
+          <article class="card diff reveal">
+            <span class="diff__icon">🤖</span>
+            <h3>AI 오케스트레이션</h3>
+            <span class="badge badge--private">Private</span>
+            <p>Claude Code 20+ 에이전트 하네스(Harness V4.3)를 직접 설계·운용. 설계 검토·테스트·리뷰를 자동화 파이프라인으로 통합.</p>
+          </article>
+
+          <article class="card diff reveal">
+            <span class="diff__icon">📚</span>
+            <h3>문서화 습관</h3>
+            <span class="badge badge--private">Local</span>
+            <p>Sok's 2nd Brain: 100+ Obsidian 노트, 14개 ADR, TIL 지속 작성. 기술 선택의 근거와 트레이드오프를 항상 기록.</p>
+          </article>
+
+          <article class="card diff reveal">
+            <span class="diff__icon">📊</span>
+            <h3>성과 검증</h3>
+            <p>모든 기술 선택에 k6 부하 테스트·벤치마크 수치 병기. 추측이 아닌 측정으로 증명하는 개발 철학.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: Contact -->
+    <section class="section contact" id="contact">
+      <div class="container">
+        <h2 class="section-title reveal">Contact</h2>
+        <p class="contact__closing reveal">백엔드 역량과 정량 성과로 함께할 기회를 찾고 있습니다.</p>
+        <div class="contact__links reveal">
+          <a class="btn btn--primary" href="mailto:cdkkyj123@gmail.com">✉ cdkkyj123@gmail.com</a>
+          <a class="btn btn--ghost" href="https://github.com/cdkkyj123" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__copy">© 2026 이석형 (Sok). Built with pure HTML/CSS/JS.</p>
+      <div class="footer__links">
+        <a class="footer__link" href="mailto:cdkkyj123@gmail.com">Email</a>
+        <a class="footer__link" href="https://github.com/cdkkyj123" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./main.js" defer></script>
+</body>
+</html>

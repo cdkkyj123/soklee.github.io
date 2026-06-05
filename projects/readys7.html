@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ready's7 — 개발자-클라이언트 프리랜서 매칭 플랫폼. Redisson tryLock·FULLTEXT+ngram·WebSocket·ALB Blue-Green 배포 상세 기술 설명">
+  <meta property="og:title" content="Ready's7 | 이석형 (Sok) Portfolio">
+  <meta property="og:description" content="Redisson tryLock·FULLTEXT+ngram·WebSocket·ALB Blue-Green 배포로 정량 성과를 달성한 프리랜서 매칭 플랫폼">
+  <title>Ready's7 — 이석형 (Sok)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <header class="nav nav--detail" id="nav">
+    <div class="container nav__inner">
+      <a class="nav__link nav__back" href="../index.html">← 메인으로</a>
+      <a class="nav__brand" href="../index.html">이석형 <span>Sok</span></a>
+    </div>
+  </header>
+
+  <main class="detail">
+    <div class="container">
+
+      <!-- 헤더 -->
+      <section class="detail__header reveal" aria-labelledby="r7-title">
+        <h1 id="r7-title">Ready's7</h1>
+        <p class="detail__role">팀 5인 리더 · 백엔드 · 2024</p>
+        <p class="detail__desc">개발자와 클라이언트를 연결하는 프리랜서 매칭 플랫폼</p>
+        <a class="btn btn--ghost" href="https://github.com/Ready-s7/Readys7-project" target="_blank" rel="noopener">GitHub →</a>
+      </section>
+
+      <!-- Overview -->
+      <section class="detail__block reveal" aria-labelledby="r7-overview">
+        <h2 id="r7-overview" class="section-title">Overview</h2>
+        <p>
+          개발자와 클라이언트를 연결하는 프리랜서 매칭 플랫폼으로, 프로젝트 지원·계약·실시간 채팅·결제를 하나의 서비스에서 처리합니다.
+          5인 팀 리더로서 전체 아키텍처 설계와 기술 선택, 코드 리뷰, AWS 배포 파이프라인을 총괄했습니다.
+          동시성 제어, 검색 성능, 실시간 채팅, 무중단 배포 네 가지 핵심 기술 문제를 직접 정의하고 정량 수치로 검증해 해결했습니다.
+        </p>
+      </section>
+
+      <!-- Tech Stack -->
+      <section class="detail__block reveal" aria-labelledby="r7-stack">
+        <h2 id="r7-stack" class="section-title">Tech Stack</h2>
+        <div class="tag-list">
+          <span class="tag">Java 17</span>
+          <span class="tag">Spring Boot</span>
+          <span class="tag">React / TypeScript</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">Redis (Redisson)</span>
+          <span class="tag">WebSocket (STOMP)</span>
+          <span class="tag">AWS ALB</span>
+          <span class="tag">AWS EC2 ×2</span>
+          <span class="tag">AWS RDS</span>
+          <span class="tag">AWS Route53</span>
+          <span class="tag">k6</span>
+        </div>
+      </section>
+
+      <!-- 핵심 기술 문제·해결 -->
+      <section class="detail__block reveal" aria-labelledby="r7-tech">
+        <h2 id="r7-tech" class="section-title">핵심 기술 문제 · 해결</h2>
+
+        <article class="chapter reveal">
+          <h3>1. 동시성 제어 — Redisson tryLock</h3>
+          <p><strong>문제:</strong> 인기 프로젝트에 동시 지원 요청이 몰릴 때 중복 승인이 발생. 모집 정원(10명)을 초과하는 Race Condition이 확인됨.</p>
+          <p><strong>기술 선택:</strong> DB 비관적 락 대비 네트워크 오버헤드가 적은 Redis Redisson tryLock 선택. waitTime 3초, leaseTime 5초로 설정해 락 취득 실패 시 즉시 반환하여 대기 없이 처리.</p>
+          <p><strong>결과:</strong> k6로 동시 100요청 부하 테스트 시 정확히 10건만 승인, 중복 승인 0건 달성.</p>
+          <div class="metric mono">동시 100요청 → 정확히 10건 승인</div>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>2. 검색 성능 — MySQL FULLTEXT + ngram 파서</h3>
+          <p><strong>문제:</strong> 기존 LIKE '%키워드%' 쿼리로 230ms 소요. 검색 기능이 느려 채용 담당자 사용성이 저하됨.</p>
+          <p><strong>기술 선택:</strong> MySQL FULLTEXT 인덱스에 ngram 파서(최소 토큰 2자)를 적용해 한글 검색 지원. Elasticsearch 도입 대비 기존 인프라 재사용으로 운영 복잡성 최소화.</p>
+          <p><strong>결과:</strong> k6 부하 테스트로 230ms → 56ms 검증, 검색 성능 +74% 향상.</p>
+          <div class="metric mono">230ms → 56ms (+74%)</div>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>3. 실시간 채팅 — WebSocket (STOMP) + Redis Pub/Sub</h3>
+          <p><strong>문제:</strong> 폴링 방식의 높은 서버 부하와 메시지 지연 문제. 수평 확장 시 서버 간 메시지 전달 보장이 필요.</p>
+          <p><strong>기술 선택:</strong> WebSocket + STOMP 프로토콜로 실시간 양방향 통신 구현. Redis Pub/Sub을 메시지 브로커로 활용해 다중 서버 인스턴스 간 메시지 동기화.</p>
+          <p><strong>결과:</strong> 폴링 완전 제거, 실시간 메시지 전달 구현, EC2 2대 수평 확장 환경에서도 메시지 누락 없음.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>4. 무중단 배포 — AWS ALB Blue-Green</h3>
+          <p><strong>문제:</strong> 코드 배포 시 서비스 중단(다운타임) 발생. 운영 중 배포 불가.</p>
+          <p><strong>기술 선택:</strong> AWS ALB(Application Load Balancer) + EC2 2대로 Blue-Green 배포 구성. App1(Blue) 배포 완료 후 트래픽 전환, App2(Green) 순차 교체 방식.</p>
+          <p><strong>결과:</strong> Zero downtime 달성. 배포 중 서비스 중단 없이 운영 가능.</p>
+          <div class="metric mono">Zero downtime</div>
+        </article>
+
+      </section>
+
+      <!-- 성과 -->
+      <section class="detail__block reveal" aria-labelledby="r7-results">
+        <h2 id="r7-results" class="section-title">성과</h2>
+        <div class="grid grid--3">
+          <div class="metric-card reveal">
+            <span class="metric mono">+74%</span>
+            <span class="metric__label">FULLTEXT 검색 성능 향상 (230ms→56ms)</span>
+          </div>
+          <div class="metric-card reveal">
+            <span class="metric mono">100→10</span>
+            <span class="metric__label">동시 100요청 중 정확히 10건 승인</span>
+          </div>
+          <div class="metric-card reveal">
+            <span class="metric mono">Zero</span>
+            <span class="metric__label">무중단 배포 (ALB Blue-Green)</span>
+          </div>
+          <div class="metric-card reveal">
+            <span class="metric mono">5인</span>
+            <span class="metric__label">팀 리더 · 전체 아키텍처 총괄</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 회고 -->
+      <section class="detail__block reveal" aria-labelledby="r7-retro">
+        <h2 id="r7-retro" class="section-title">회고</h2>
+        <p>
+          팀 리더로서 기술 선택의 근거를 팀원에게 설득하고, k6 벤치마크로 수치를 제시하는 과정에서 "정량 성과로 증명"하는 개발 문화를 내면화했습니다.
+          Redisson 분산 락과 FULLTEXT 검색 최적화 모두 단순 구현이 아니라 문제 정의 → 기술 비교 → 측정 → 검증의 사이클을 거쳤고, 이 접근법이 이후 모든 프로젝트의 기준이 되었습니다.
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <a class="btn btn--ghost" href="../index.html">← 메인으로</a>
+    </div>
+  </footer>
+
+  <script src="../main.js" defer></script>
+</body>
+</html>
