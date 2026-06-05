@@ -67,7 +67,7 @@
           <h3>1. Kafka 이벤트 드리븐 + 트랜잭션 커밋 후 발행 순서 보장</h3>
           <p><strong>문제:</strong> 경매 입찰·낙찰·결제 처리 시 서비스 간 강한 결합으로 장애 전파. 또한 DB 트랜잭션 커밋 전 이벤트 발행 시 데이터 불일치 위험.</p>
           <p><strong>기술 선택:</strong> 경매 상태 변경을 Kafka 이벤트로 발행해 서비스 간 느슨한 결합 구현. 트랜잭션 커밋 후 이벤트 발행을 보장하기 위해 Spring의 TransactionSynchronization을 활용, afterCommit 훅에서 Kafka 발행 처리.</p>
-          <p><strong>결과:</strong> 서비스 간 결합도 감소. DB 커밋 전 이벤트 발행으로 인한 데이터 불일치 문제 제거. 입찰→낙찰→알림 이벤트 체인의 순서 보장.</p>
+          <p><strong>결과:</strong> 서비스 간 결합도 감소. DB 커밋 전 이벤트 발행으로 인한 데이터 불일치 문제 제거. 입찰→낙찰→알림 이벤트 체인의 순서 보장. <em>트레이드오프:</em> afterCommit 훅 방식은 프로세스 크래시 시 이벤트 유실 가능성(Transactional Outbox 대비 내구성 낮음). 경매 이벤트 규모에서는 단순성을 우선했으며, 유실 방지가 중요한 결제/정산은 별도 보상 트랜잭션으로 처리.</p>
         </article>
 
         <article class="chapter reveal">

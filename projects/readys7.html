@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Ready's7 — 개발자-클라이언트 프리랜서 매칭 플랫폼. Redisson tryLock·FULLTEXT+ngram·WebSocket·ALB Blue-Green 배포 상세 기술 설명">
+  <meta name="description" content="Ready's7 — 개발자-클라이언트 프리랜서 매칭 플랫폼. Redisson tryLock·FULLTEXT+ngram·WebSocket·ALB 롤링 배포 상세 기술 설명">
   <meta property="og:title" content="Ready's7 | 이석형 (Sok) Portfolio">
-  <meta property="og:description" content="Redisson tryLock·FULLTEXT+ngram·WebSocket·ALB Blue-Green 배포로 정량 성과를 달성한 프리랜서 매칭 플랫폼">
+  <meta property="og:description" content="Redisson tryLock·FULLTEXT+ngram·WebSocket·ALB 롤링 배포로 정량 성과를 달성한 프리랜서 매칭 플랫폼">
   <title>Ready's7 — 이석형 (Sok)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -68,7 +68,7 @@
           <h3>1. 동시성 제어 — Redisson tryLock</h3>
           <p><strong>문제:</strong> 인기 프로젝트에 동시 지원 요청이 몰릴 때 중복 승인이 발생. 모집 정원(10명)을 초과하는 Race Condition이 확인됨.</p>
           <p><strong>기술 선택:</strong> DB 비관적 락 대비 네트워크 오버헤드가 적은 Redis Redisson tryLock 선택. waitTime 3초, leaseTime 5초로 설정해 락 취득 실패 시 즉시 반환하여 대기 없이 처리.</p>
-          <p><strong>결과:</strong> k6로 동시 100요청 부하 테스트 시 정확히 10건만 승인, 중복 승인 0건 달성.</p>
+          <p><strong>결과:</strong> k6로 동시 100요청 부하 테스트 시 정확히 10건만 승인, 중복 승인 0건 달성. Redis 단일 노드 페일오버 리스크에 대비해 DB proposals 테이블에 unique constraint를 최종 방어선으로 병행 적용.</p>
           <div class="metric mono">동시 100요청 → 정확히 10건 승인</div>
         </article>
 
@@ -84,7 +84,7 @@
           <h3>3. 실시간 채팅 — WebSocket (STOMP) + Redis Pub/Sub</h3>
           <p><strong>문제:</strong> 폴링 방식의 높은 서버 부하와 메시지 지연 문제. 수평 확장 시 서버 간 메시지 전달 보장이 필요.</p>
           <p><strong>기술 선택:</strong> WebSocket + STOMP 프로토콜로 실시간 양방향 통신 구현. Redis Pub/Sub을 메시지 브로커로 활용해 다중 서버 인스턴스 간 메시지 동기화.</p>
-          <p><strong>결과:</strong> 폴링 완전 제거, 실시간 메시지 전달 구현, EC2 2대 수평 확장 환경에서도 메시지 누락 없음.</p>
+          <p><strong>결과:</strong> 폴링 완전 제거, 실시간 메시지 전달 구현, EC2 2대 수평 확장 환경에서도 서버 간 메시지 라우팅 보장. <em>한계:</em> Redis Pub/Sub은 영속성을 제공하지 않으므로 오프라인 메시지는 DB에 별도 저장하고, 재접속 시 커서 기반 히스토리 조회로 보완.</p>
         </article>
 
         <article class="chapter reveal">
@@ -118,6 +118,22 @@
             <span class="metric__label">팀 리더 · 전체 아키텍처 총괄</span>
           </div>
         </div>
+      </section>
+
+      <!-- 설계 결정 -->
+      <section class="detail__block reveal" aria-labelledby="r7-decisions">
+        <h2 id="r7-decisions" class="section-title">설계 결정</h2>
+
+        <article class="chapter reveal">
+          <h3>왜 Redis Redisson인가 — DB 비관적 락 대신</h3>
+          <p>DB 비관적 락은 락 보유 중 DB 커넥션을 점유해 고동시성 환경에서 커넥션 풀 고갈 위험이 있습니다. Redis tryLock은 외부 락 저장소로 DB 커넥션 독립, waitTime 설정으로 대기 없는 Fail-Fast 처리가 가능합니다. Redis 단일 노드 페일오버 리스크는 DB unique constraint 최종 방어선으로 보완했습니다.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>왜 MySQL FULLTEXT인가 — Elasticsearch 대신</h3>
+          <p>팀 규모(5인)와 배포 환경(EC2×2)에서 Elasticsearch 클러스터 운영 오버헤드 감당이 어렵습니다. MySQL FULLTEXT + ngram 파서로 기존 RDS 인프라를 재사용해 운영 복잡성을 최소화했고, 실측 결과(56ms)로 요구사항을 충분히 충족했습니다. 트래픽이 대폭 증가하면 Elasticsearch 전환 시점을 고려할 것입니다.</p>
+        </article>
+
       </section>
 
       <!-- 회고 -->
