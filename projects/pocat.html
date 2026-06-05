@@ -104,6 +104,27 @@
         </p>
       </section>
 
+      <!-- 설계 결정 -->
+      <section class="detail__block reveal" aria-labelledby="pocat-decisions">
+        <h2 id="pocat-decisions" class="section-title">설계 결정</h2>
+
+        <article class="chapter reveal">
+          <h3>왜 afterCommit 훅인가 — Transactional Outbox 대신</h3>
+          <p>Transactional Outbox 패턴은 내구성이 높지만 Outbox 테이블 관리·Polling Publisher 구현 복잡성이 추가됩니다. 경매 이벤트는 실시간성이 우선이고 낙찰·알림 유실 시 재시도 허용 설계(보상 로직 존재)로 단순성을 선택했습니다. 결제·정산처럼 절대 유실 불가 도메인은 별도 보상 트랜잭션으로 처리합니다.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>왜 Redis TTL + 백업 스케줄러 이중화인가</h3>
+          <p>경매 종료 이벤트를 단일 스케줄러에만 의존하면 서버 재시작 시 누락 가능성이 있습니다. Redis TTL Keyspace Notification은 즉시 트리거되지만 Redis 장애 시 손실됩니다. 두 방식을 이중화해 어느 한쪽이 실패해도 DB 상태 조회로 복구할 수 있게 했습니다. 단, 이중화로 인한 중복 처리를 막기 위해 경매 종료 처리에 DB 수준 상태 체크를 추가했습니다.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>왜 Spring AI + Redis Vector Store인가 — Pinecone 대신</h3>
+          <p>외부 벡터 DB(Pinecone 등) 도입 시 추가 과금·레이턴시·인프라 복잡성이 증가합니다. 이미 운용 중인 Redis 인프라로 Vector Store를 구성해 추가 비용 없이 RAG 파이프라인을 구현했습니다. 카드 시세 추정에 요구되는 검색 정확도 수준에서는 Redis Vector Store로 충분하며, 대규모 트래픽 전환 시점에 전용 벡터 DB로 마이그레이션할 수 있는 인터페이스를 유지했습니다.</p>
+        </article>
+
+      </section>
+
     </div>
   </main>
 
