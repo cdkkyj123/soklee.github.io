@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Harness V4.3 — Claude Code 기반 20개 전담 에이전트 개발 자동화 파이프라인. Phase 0~5 오케스트레이션 설계와 7 Non-Negotiables">
+  <meta property="og:title" content="Harness V4.3 | 이석형 (Sok) Portfolio">
+  <meta property="og:description" content="Claude Code 20개 전담 에이전트 하네스 — 설계 게이트·자동 테스트·보안 리뷰를 파이프라인으로 통합한 개인 AI 엔지니어링 시스템">
+  <title>Harness V4.3 — 이석형 (Sok)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <header class="nav nav--detail" id="nav">
+    <div class="container nav__inner">
+      <a class="nav__link nav__back" href="../index.html">← 메인으로</a>
+      <a class="nav__brand" href="../index.html">이석형 <span>Sok</span></a>
+    </div>
+  </header>
+
+  <main class="detail">
+    <div class="container">
+
+      <section class="detail__header reveal">
+        <h1>Harness V4.3 <span class="badge badge--private">Private System</span></h1>
+        <p class="detail__role">개인 설계 · AI 엔지니어링 · 2026</p>
+        <p class="detail__desc">Claude Code 기반 20개 전담 에이전트 개발 자동화 오케스트레이션 시스템</p>
+      </section>
+
+      <section class="detail__block reveal" aria-labelledby="h-overview">
+        <h2 id="h-overview" class="section-title">Overview</h2>
+        <p>
+          소프트웨어 개발의 전 단계(기획→설계→구현→검증→배포)를 전담 에이전트가 릴레이 방식으로 처리하는 개인 AI 엔지니어링 시스템입니다.
+          단순 AI 자동완성이 아닌, 각 Phase의 책임과 경계를 명확히 나눈 <strong>오케스트레이션 파이프라인</strong>으로 설계했습니다.
+          이 포트폴리오 사이트 자체가 Harness V4.3을 통해 Phase 0~5 전체 파이프라인으로 제작된 산출물입니다.
+        </p>
+      </section>
+
+      <section class="detail__block reveal" aria-labelledby="h-pipeline">
+        <h2 id="h-pipeline" class="section-title">Phase 파이프라인</h2>
+
+        <article class="chapter reveal">
+          <h3>Phase 0~2: 기획·설계 단계</h3>
+          <p><strong>CEO</strong> → 전략 방향·프로젝트 경중 결정. <strong>PM + RESEARCH</strong> (병렬) → PRD 작성·기존 패턴 조사. <strong>ARCHITECT</strong> → Blueprint 설계. <strong>BLUEPRINT CRITIC</strong> → 핑퐁 리뷰(최대 2라운드).</p>
+          <p><strong>DESIGN GATE</strong>: 사용자 승인 전 구현 진행 불가. 설계 완성도 강제.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>Phase 2.5~3b: 구현 단계</h3>
+          <p><strong>PLANNER + DOCS</strong> (병렬) → 브랜치 생성·초기 ADR 문서화. <strong>TEST</strong> → 기존 패턴 파악 후 RED 테스트 선행. <strong>BACKEND + FRONTEND + DB</strong> → 병렬 구현. 완료 즉시 인프라 체크 + 테스트 GREEN 검증.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>Phase 4~5: 검증·배포 단계</h3>
+          <p><strong>REVIEW + SECURITY + UIUX</strong> → 코드 품질·보안·접근성 검증. <strong>DOCS</strong> → 보안·테스트·성능 문서화. <strong>RELEASE → DEVOPS + DOCS</strong> → PR 생성·배포·최종 문서화.</p>
+        </article>
+
+      </section>
+
+      <section class="detail__block reveal" aria-labelledby="h-agents">
+        <h2 id="h-agents" class="section-title">에이전트 구성 (20개)</h2>
+        <div class="tag-list reveal">
+          <span class="tag">CEO</span>
+          <span class="tag">PM</span>
+          <span class="tag">RESEARCH</span>
+          <span class="tag">ARCHITECT</span>
+          <span class="tag">BLUEPRINT CRITIC</span>
+          <span class="tag">PLANNER</span>
+          <span class="tag">TEST</span>
+          <span class="tag">BACKEND</span>
+          <span class="tag">FRONTEND</span>
+          <span class="tag">DB</span>
+          <span class="tag">UIUX</span>
+          <span class="tag">REVIEW</span>
+          <span class="tag">SECURITY</span>
+          <span class="tag">DOCS</span>
+          <span class="tag">DEVOPS</span>
+          <span class="tag">RELEASE</span>
+          <span class="tag">DEBUG</span>
+          <span class="tag">CONSULT</span>
+          <span class="tag">CONDUCTOR</span>
+          <span class="tag">META</span>
+        </div>
+        <p style="margin-top:1rem;">각 에이전트는 전담 책임 범위와 사용 모델(Opus/Sonnet/Haiku)이 고정됩니다. 오케스트레이터(본인)는 설계·조율만 담당하며 직접 구현하지 않습니다.</p>
+      </section>
+
+      <section class="detail__block reveal" aria-labelledby="h-nonneg">
+        <h2 id="h-nonneg" class="section-title">7 Non-Negotiables</h2>
+
+        <article class="chapter reveal">
+          <h3>1. QUICK Check</h3>
+          <p>수정 파일 ≤3·새 DB 없음·외부 의존성 없음·비즈니스 로직 변경 없음·동시성·트랜잭션 경계 변경 없음·"빠르게/간단히" 키워드 — 6가지 모두 충족 시만 QUICK 에이전트 단독 처리. 하나라도 미충족 시 전체 파이프라인.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>2. Design Gate</h3>
+          <p>ARCHITECT Blueprint 완료 → 사용자 승인 대기. 승인 전 Phase 2.5 진행 절대 불가. 설계 완성도를 구현 전에 강제로 검증.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>3. Orchestrator Never Implements</h3>
+          <p>오케스트레이터(메인 Claude)는 설계·조율만 담당. 모든 구현(Edit/Write)은 전담 에이전트 경유 필수. Edit/Write 도구 호출 직전 "내가 직접 구현하는 것인가?" 자문 — YES면 즉시 중단.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>4~7. DOCS 필수 · 테스트 자동 실행 · Checkpoint 우선 · Edit/Write Guard</h3>
+          <p>Phase 2.5·4.5·5에서 DOCS 에이전트 호출 필수(미호출 = Phase 미완료). Phase 3b 완료 즉시 테스트 GREEN 확인 후 Phase 4 진입. Phase 완료 후 checkpoint.md 저장 전 다음 Phase 진행 불가.</p>
+        </article>
+
+      </section>
+
+      <section class="detail__block reveal" aria-labelledby="h-evidence">
+        <h2 id="h-evidence" class="section-title">실증 — 이 포트폴리오</h2>
+        <div class="grid grid--3">
+          <div class="metric-card reveal">
+            <span class="metric mono">7개</span>
+            <span class="metric__label">파일 생성 (index + 4 detail + 404 + gitignore)</span>
+          </div>
+          <div class="metric-card reveal">
+            <span class="metric mono">Phase<br>0~5</span>
+            <span class="metric__label">전체 파이프라인 완주 — CEO 전략부터 GitHub Pages 배포까지</span>
+          </div>
+          <div class="metric-card reveal">
+            <span class="metric mono">3회</span>
+            <span class="metric__label">면접관 3-페르소나 리뷰 + 2차 이상 자동 개선 패스</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="detail__block reveal" aria-labelledby="h-decisions">
+        <h2 id="h-decisions" class="section-title">설계 결정</h2>
+
+        <article class="chapter reveal">
+          <h3>왜 Phase 기반 파이프라인인가</h3>
+          <p>AI에게 "전부 해줘"를 주면 설계 없이 구현으로 달려가거나, 검증을 생략하는 경향이 있습니다. Phase 경계를 명확히 나누고 Phase 간 Gate(DESIGN GATE, Checkpoint)를 두면 AI의 성급함을 구조적으로 억제할 수 있습니다. 체크포인트는 세션 한도 초과 시 재개점으로도 기능합니다.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>왜 에이전트 전문화인가</h3>
+          <p>단일 범용 AI에게 모든 역할을 맡기면 맥락이 오염되어 점점 일관성이 떨어집니다. 역할별 에이전트를 분리하면 각 에이전트가 자신의 책임 범위에만 집중해 품질이 올라갑니다. SECURITY 에이전트는 "보안 취약점"만 보고, UIUX 에이전트는 "접근성·사용성"만 봅니다.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>왜 "Orchestrator Never Implements" 원칙인가</h3>
+          <p>오케스트레이터가 직접 코드를 작성하면 설계·구현·검증이 한 흐름에서 섞여 편향이 발생합니다. 설계자와 구현자를 분리해야 "내가 설계한 것을 내가 검증"하는 확증 편향을 차단할 수 있습니다. 이것은 소프트웨어 팀에서 설계자와 개발자를 분리하는 이유와 같은 원리입니다.</p>
+        </article>
+
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <a class="btn btn--ghost" href="../index.html">← 메인으로</a>
+    </div>
+  </footer>
+
+  <script src="../main.js" defer></script>
+</body>
+</html>
