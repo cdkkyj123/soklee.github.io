@@ -151,7 +151,7 @@
         <article class="chapter reveal">
           <h3>2. 검색 성능 — MySQL FULLTEXT + ngram 파서</h3>
           <p><strong>문제:</strong> 기존 LIKE '%키워드%' 쿼리로 230ms 소요. 5만 건 이상 더미 데이터 환경에서 검색 기능이 느려 채용 담당자 사용성이 저하됨.</p>
-          <p><strong>기술 선택:</strong> ① B-Tree 인덱스 최적화 및 EXPLAIN 실행 계획 분석으로 기존 쿼리 병목 확인. ② MySQL FULLTEXT 인덱스에 ngram 파서(최소 토큰 2자)를 적용해 한글 검색 지원. ③ 검색 API에 Caffeine(L1 로컬) + Redis(L2 원격) 이중 캐시 적용으로 반복 조회 최적화. Elasticsearch 도입 대비 기존 인프라 재사용으로 운영 복잡성 최소화.</p>
+          <p><strong>기술 선택:</strong> ① EXPLAIN 실행 계획 분석으로 기존 쿼리 병목 확인 후 B-Tree 인덱스 최적화. ② MySQL FULLTEXT 인덱스에 ngram 파서(최소 토큰 2자)를 적용해 한글 검색 지원. ③ 검색 API 캐싱으로 Caffeine(로컬 캐시) 먼저 적용했으나, EC2 2대 다중 서버 환경에서 인스턴스 간 캐시 불일치 문제 발생 → Redis 분산 캐시로 전환해 모든 인스턴스가 동일 캐시를 공유하도록 해결. Elasticsearch 도입 대비 기존 인프라 재사용으로 운영 복잡성 최소화.</p>
           <p><strong>결과:</strong> k6 VU=50 부하 테스트(AWS RDS MySQL 8.0, 50,000건 더미 데이터 기반) 230ms → 56ms 검증, 검색 성능 +74% 향상. FULLTEXT 인덱스 warm-up 후 측정.</p>
           <div class="metric mono">230ms → 56ms (+74%)</div>
         </article>
@@ -174,7 +174,7 @@
         <article class="chapter reveal">
           <h3>5. 고급 검색 — QueryDSL + Redis Sorted Set 인기 검색어</h3>
           <p><strong>문제:</strong> 기술 스택·지역·별점 등 다중 조건 검색을 동적으로 조합해야 하며, 자주 조회되는 인기 검색어를 실시간으로 집계해 UX를 개선해야 함.</p>
-          <p><strong>기술 선택:</strong> QueryDSL로 타입 안전한 동적 쿼리 조합 구현(null 조건 자동 제외). 인기 검색어는 Redis Sorted Set(ZADD·ZINCRBY)으로 실시간 점수 누적, ZREVRANGE로 Top-10 랭킹 조회. 검색 API 응답은 Caffeine L1 + Redis L2 이중 캐시로 중복 DB 조회 제거.</p>
+          <p><strong>기술 선택:</strong> QueryDSL로 타입 안전한 동적 쿼리 조합 구현(null 조건 자동 제외). 인기 검색어는 Redis Sorted Set(ZADD·ZINCRBY)으로 실시간 점수 누적, ZREVRANGE로 Top-10 랭킹 조회. 검색 API 응답은 Redis 분산 캐시로 중복 DB 조회 제거(Caffeine 로컬 캐시 적용 후 다중 서버 불일치 문제로 Redis 전환).</p>
           <p><strong>결과:</strong> 다중 조건 조합 검색 쿼리 타입 안전성 확보. 인기 검색어 랭킹 실시간 반영, 반복 검색 요청의 DB 조회 없이 캐시 응답 처리.</p>
         </article>
 
