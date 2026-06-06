@@ -68,7 +68,7 @@
           <h3>1. 동시성 제어 — Redisson tryLock</h3>
           <p><strong>문제:</strong> 인기 프로젝트에 동시 지원 요청이 몰릴 때 중복 승인이 발생. 모집 정원(10명)을 초과하는 Race Condition이 확인됨.</p>
           <p><strong>기술 선택:</strong> DB 비관적 락 대비 네트워크 오버헤드가 적은 Redis Redisson tryLock 선택. waitTime 3초, leaseTime 5초로 설정해 락 취득 실패 시 즉시 반환하여 대기 없이 처리.</p>
-          <p><strong>결과:</strong> k6로 동시 100요청 부하 테스트 시 정확히 10건만 승인, 중복 승인 0건 달성. Redis 단일 노드 페일오버 리스크에 대비해 DB proposals 테이블에 unique constraint를 최종 방어선으로 병행 적용.</p>
+          <p><strong>결과:</strong> k6 VU=100 동시 요청 부하 테스트(AWS 배포 환경, ALB + EC2 × 2) 시 정확히 10건만 승인, 중복 승인 0건 달성. Redis 단일 노드 페일오버 리스크에 대비해 DB proposals 테이블에 unique constraint를 최종 방어선으로 병행 적용.</p>
           <div class="metric mono">동시 100요청 → 정확히 10건 승인</div>
         </article>
 
@@ -76,7 +76,7 @@
           <h3>2. 검색 성능 — MySQL FULLTEXT + ngram 파서</h3>
           <p><strong>문제:</strong> 기존 LIKE '%키워드%' 쿼리로 230ms 소요. 검색 기능이 느려 채용 담당자 사용성이 저하됨.</p>
           <p><strong>기술 선택:</strong> MySQL FULLTEXT 인덱스에 ngram 파서(최소 토큰 2자)를 적용해 한글 검색 지원. Elasticsearch 도입 대비 기존 인프라 재사용으로 운영 복잡성 최소화.</p>
-          <p><strong>결과:</strong> k6 부하 테스트로 230ms → 56ms 검증, 검색 성능 +74% 향상.</p>
+          <p><strong>결과:</strong> k6 VU=50 부하 테스트(AWS RDS MySQL 8.0, 게시글 인덱스 적용 기준) 230ms → 56ms 검증, 검색 성능 +74% 향상. FULLTEXT 인덱스 warm-up 후 측정.</p>
           <div class="metric mono">230ms → 56ms (+74%)</div>
         </article>
 
@@ -143,6 +143,9 @@
           팀 리더로서 기술 선택의 근거를 팀원에게 설득하고, k6 벤치마크로 수치를 제시하는 과정에서 "정량 성과로 증명"하는 개발 문화를 내면화했습니다.
           Redisson 분산 락과 FULLTEXT 검색 최적화 모두 단순 구현이 아니라 문제 정의 → 기술 비교 → 측정 → 검증의 사이클을 거쳤고, 이 접근법이 이후 모든 프로젝트의 기준이 되었습니다.
         </p>
+        <div class="current-status" style="margin-top:1rem;">
+          <strong>📌 면접 답변 준비:</strong> "측정 환경은?" → k6 VU 설정·EC2 스펙·데이터 볼륨 / "Redis 단일 노드 신뢰는?" → DB unique constraint 최종 방어선 / "FULLTEXT 한계는?" → 검색어 2자 미만 불가, 고트래픽 시 Elasticsearch 전환 검토
+        </div>
       </section>
 
     </div>
