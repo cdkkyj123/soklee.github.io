@@ -60,6 +60,80 @@
         </div>
       </section>
 
+      <!-- 아키텍처 -->
+      <section class="detail__block reveal" aria-labelledby="r7-arch">
+        <h2 id="r7-arch" class="section-title">시스템 아키텍처</h2>
+        <svg viewBox="0 0 760 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto;" role="img" aria-label="Ready's7 시스템 아키텍처 다이어그램">
+          <defs>
+            <marker id="r7-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f0a500"/></marker>
+            <marker id="r7-arr-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a4a6a"/></marker>
+          </defs>
+          <!-- bg -->
+          <rect width="760" height="270" fill="#0f1626" rx="8"/>
+          <!-- label -->
+          <text x="380" y="22" text-anchor="middle" fill="#f0a500" font-size="11" font-weight="700" font-family="JetBrains Mono,monospace" letter-spacing="2">READY'S7 · ARCHITECTURE</text>
+          <!-- Client -->
+          <rect x="14" y="100" width="80" height="48" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="54" y="121" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Client</text>
+          <text x="54" y="137" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">Browser</text>
+          <!-- arrow client→alb -->
+          <line x1="94" y1="124" x2="128" y2="124" stroke="#f0a500" stroke-width="1.5" marker-end="url(#r7-arr)"/>
+          <text x="111" y="118" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">HTTPS</text>
+          <!-- ALB -->
+          <rect x="128" y="88" width="100" height="72" rx="6" fill="#16213e" stroke="#f0a500" stroke-width="1.5"/>
+          <text x="178" y="114" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">AWS ALB</text>
+          <text x="178" y="129" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">Load Balancer</text>
+          <text x="178" y="144" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">Rolling Deploy</text>
+          <!-- arrow alb→ec2-1 -->
+          <line x1="228" y1="104" x2="270" y2="82" stroke="#f0a500" stroke-width="1.5" marker-end="url(#r7-arr)"/>
+          <!-- arrow alb→ec2-2 -->
+          <line x1="228" y1="148" x2="270" y2="170" stroke="#f0a500" stroke-width="1.5" marker-end="url(#r7-arr)"/>
+          <!-- EC2-1 -->
+          <rect x="270" y="55" width="110" height="54" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="325" y="78" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">EC2 App1</text>
+          <text x="325" y="93" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">Spring Boot</text>
+          <circle cx="313" cy="100" r="3" fill="#3ddc84"/>
+          <text x="320" y="104" fill="#3ddc84" font-size="8" font-family="Inter,sans-serif">Active</text>
+          <!-- EC2-2 -->
+          <rect x="270" y="143" width="110" height="54" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="325" y="166" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">EC2 App2</text>
+          <text x="325" y="181" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">Spring Boot</text>
+          <circle cx="313" cy="188" r="3" fill="#3ddc84"/>
+          <text x="320" y="192" fill="#3ddc84" font-size="8" font-family="Inter,sans-serif">Active</text>
+          <!-- arrow ec2→rds -->
+          <line x1="380" y1="80" x2="430" y2="80" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#r7-arr-g)"/>
+          <!-- arrow ec2-2→redis -->
+          <line x1="380" y1="168" x2="430" y2="168" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#r7-arr-g)"/>
+          <!-- arrow ec2-1→redis (cross) -->
+          <line x1="380" y1="90" x2="430" y2="155" stroke="#4a4a6a" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#r7-arr-g)"/>
+          <!-- RDS -->
+          <rect x="430" y="50" width="115" height="54" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="487" y="74" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">AWS RDS</text>
+          <text x="487" y="89" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">MySQL 8.0</text>
+          <text x="487" y="100" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">FULLTEXT+ngram</text>
+          <!-- Redis -->
+          <rect x="430" y="138" width="115" height="68" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="487" y="161" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Redis</text>
+          <text x="487" y="176" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">Redisson tryLock</text>
+          <text x="487" y="190" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">Pub/Sub · Chat</text>
+          <!-- GitHub Actions -->
+          <rect x="128" y="215" width="260" height="40" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="258" y="233" text-anchor="middle" fill="#a0a0b0" font-size="10" font-weight="600" font-family="Inter,sans-serif">GitHub Actions CI/CD</text>
+          <text x="258" y="247" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">push → build → ALB Rolling Deploy</text>
+          <!-- deploy arrow -->
+          <line x1="178" y1="215" x2="178" y2="162" stroke="#a0a0b0" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#r7-arr-g)"/>
+          <!-- Metrics box -->
+          <rect x="572" y="50" width="172" height="155" rx="6" fill="#16213e" stroke="#f0a500" stroke-width="1"/>
+          <text x="658" y="72" text-anchor="middle" fill="#f0a500" font-size="10" font-weight="700" font-family="Inter,sans-serif">성과</text>
+          <text x="585" y="98" fill="#f0a500" font-size="20" font-weight="700" font-family="JetBrains Mono,monospace">+74%</text>
+          <text x="585" y="111" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">FULLTEXT 검색 성능</text>
+          <text x="585" y="135" fill="#f0a500" font-size="20" font-weight="700" font-family="JetBrains Mono,monospace">100→10</text>
+          <text x="585" y="148" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">동시 요청 정확 제어</text>
+          <text x="585" y="172" fill="#f0a500" font-size="20" font-weight="700" font-family="JetBrains Mono,monospace">Zero</text>
+          <text x="585" y="185" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">무중단 배포</text>
+        </svg>
+      </section>
+
       <!-- 핵심 기술 문제·해결 -->
       <section class="detail__block reveal" aria-labelledby="r7-tech">
         <h2 id="r7-tech" class="section-title">핵심 기술 문제 · 해결</h2>

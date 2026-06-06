@@ -59,6 +59,73 @@
         </div>
       </section>
 
+      <!-- 아키텍처 -->
+      <section class="detail__block reveal" aria-labelledby="pocat-arch">
+        <h2 id="pocat-arch" class="section-title">시스템 아키텍처</h2>
+        <svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto;" role="img" aria-label="POCAT 시스템 아키텍처 다이어그램">
+          <defs>
+            <marker id="pc-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f0a500"/></marker>
+            <marker id="pc-arr-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a4a6a"/></marker>
+          </defs>
+          <rect width="760" height="250" fill="#0f1626" rx="8"/>
+          <text x="380" y="22" text-anchor="middle" fill="#f0a500" font-size="11" font-weight="700" font-family="JetBrains Mono,monospace" letter-spacing="2">POCAT · ARCHITECTURE</text>
+          <!-- Client -->
+          <rect x="14" y="95" width="80" height="48" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="54" y="116" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Client</text>
+          <text x="54" y="131" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">경매 참가자</text>
+          <!-- arrow -->
+          <line x1="94" y1="119" x2="128" y2="119" stroke="#f0a500" stroke-width="1.5" marker-end="url(#pc-arr)"/>
+          <!-- API Gateway / Spring Boot -->
+          <rect x="128" y="80" width="120" height="78" rx="6" fill="#16213e" stroke="#f0a500" stroke-width="1.5"/>
+          <text x="188" y="105" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Spring Boot</text>
+          <text x="188" y="120" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">Auction API</text>
+          <text x="188" y="135" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">afterCommit</text>
+          <text x="188" y="148" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">이벤트 발행 순서 보장</text>
+          <!-- arrow to kafka -->
+          <line x1="248" y1="119" x2="290" y2="119" stroke="#f0a500" stroke-width="1.5" marker-end="url(#pc-arr)"/>
+          <!-- Kafka -->
+          <rect x="290" y="93" width="110" height="52" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="345" y="116" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Kafka</text>
+          <text x="345" y="131" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">입찰→낙찰→알림 체인</text>
+          <!-- arrow kafka→consumers -->
+          <line x1="400" y1="119" x2="440" y2="100" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#pc-arr-g)"/>
+          <line x1="400" y1="119" x2="440" y2="140" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#pc-arr-g)"/>
+          <!-- Consumer 1 -->
+          <rect x="440" y="70" width="110" height="48" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="495" y="91" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">낙찰 처리</text>
+          <text x="495" y="106" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">결과 알림 · 정산 트리거</text>
+          <!-- Consumer 2 -->
+          <rect x="440" y="132" width="110" height="48" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="495" y="153" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">알림 서비스</text>
+          <text x="495" y="168" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">입찰자 · 판매자 알림</text>
+          <!-- Spring AI + Resilience4j -->
+          <rect x="128" y="185" width="175" height="52" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="215" y="207" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">Spring AI + Resilience4j</text>
+          <text x="215" y="221" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">Circuit Breaker</text>
+          <text x="215" y="232" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">Gemini API 장애 격리</text>
+          <!-- arrow spring ai→gemini -->
+          <line x1="303" y1="211" x2="340" y2="211" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#pc-arr-g)"/>
+          <!-- Gemini box -->
+          <rect x="340" y="193" width="100" height="38" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1"/>
+          <text x="390" y="210" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">Gemini API</text>
+          <text x="390" y="224" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">카드 시세 추정</text>
+          <!-- fallback -->
+          <text x="390" y="195" text-anchor="middle" fill="#9090a0" font-size="7" font-family="Inter,sans-serif">fallback → 추정 불가 반환</text>
+          <!-- Redis TTL + ShedLock -->
+          <rect x="580" y="80" width="160" height="90" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="660" y="104" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">경매 라이프사이클</text>
+          <text x="660" y="120" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">Redis TTL</text>
+          <text x="660" y="133" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">만료 감지 (1차)</text>
+          <text x="660" y="150" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">ShedLock Backup</text>
+          <text x="660" y="163" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">이중화 안전장치</text>
+          <!-- arrow kafka→lifecycle -->
+          <line x1="400" y1="119" x2="580" y2="119" stroke="#4a4a6a" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#pc-arr-g)"/>
+          <!-- 517 commits label -->
+          <text x="660" y="195" text-anchor="middle" fill="#f0a500" font-size="14" font-weight="700" font-family="JetBrains Mono,monospace">517</text>
+          <text x="660" y="210" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">커밋 · 14 ADR</text>
+        </svg>
+      </section>
+
       <!-- 핵심 기술 문제·해결 -->
       <section class="detail__block reveal" aria-labelledby="pocat-tech">
         <h2 id="pocat-tech" class="section-title">핵심 기술 문제 · 해결</h2>

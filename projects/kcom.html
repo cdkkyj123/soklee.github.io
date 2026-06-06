@@ -58,6 +58,68 @@
         </div>
       </section>
 
+      <!-- 아키텍처 -->
+      <section class="detail__block reveal" aria-labelledby="kcom-arch">
+        <h2 id="kcom-arch" class="section-title">시스템 아키텍처</h2>
+        <svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto;" role="img" aria-label="K-Com 시스템 아키텍처 다이어그램">
+          <defs>
+            <marker id="kc-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f0a500"/></marker>
+            <marker id="kc-arr-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a4a6a"/></marker>
+          </defs>
+          <rect width="760" height="240" fill="#0f1626" rx="8"/>
+          <text x="380" y="22" text-anchor="middle" fill="#f0a500" font-size="11" font-weight="700" font-family="JetBrains Mono,monospace" letter-spacing="2">K-COM · ARCHITECTURE</text>
+          <!-- Client -->
+          <rect x="14" y="88" width="80" height="48" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="54" y="109" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Client</text>
+          <text x="54" y="124" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">Mobile / Web</text>
+          <!-- arrow -->
+          <line x1="94" y1="112" x2="128" y2="112" stroke="#f0a500" stroke-width="1.5" marker-end="url(#kc-arr)"/>
+          <!-- Order Service -->
+          <rect x="128" y="75" width="120" height="74" rx="6" fill="#16213e" stroke="#f0a500" stroke-width="1.5"/>
+          <text x="188" y="99" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Order Service</text>
+          <text x="188" y="114" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">Spring Boot 3.5</text>
+          <text x="188" y="129" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">Facade + Watchdog</text>
+          <text x="188" y="141" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">Redisson Lock</text>
+          <!-- arrow to DB+Outbox -->
+          <line x1="248" y1="105" x2="282" y2="90" stroke="#f0a500" stroke-width="1.5" marker-end="url(#kc-arr)"/>
+          <!-- DB+Outbox -->
+          <rect x="282" y="55" width="125" height="70" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="344" y="78" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">MySQL + Outbox</text>
+          <text x="344" y="93" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">단일 트랜잭션</text>
+          <text x="344" y="107" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">주문 저장 + Outbox</text>
+          <text x="344" y="118" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">원자성 보장</text>
+          <!-- ShedLock poller -->
+          <rect x="282" y="150" width="125" height="50" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="344" y="171" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">ShedLock Poller</text>
+          <text x="344" y="186" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">Outbox 조회 → Kafka 발행</text>
+          <!-- outbox to poller -->
+          <line x1="344" y1="125" x2="344" y2="150" stroke="#4a4a6a" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#kc-arr-g)"/>
+          <!-- arrow poller→kafka -->
+          <line x1="407" y1="172" x2="450" y2="155" stroke="#f0a500" stroke-width="1.5" marker-end="url(#kc-arr)"/>
+          <!-- Kafka -->
+          <rect x="450" y="130" width="110" height="55" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="505" y="154" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Kafka</text>
+          <text x="505" y="169" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">KRaft 모드</text>
+          <text x="505" y="180" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">ZooKeeper 없음</text>
+          <!-- arrow kafka→consumer -->
+          <line x1="560" y1="157" x2="600" y2="157" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#kc-arr-g)"/>
+          <!-- Consumers -->
+          <rect x="600" y="130" width="145" height="55" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="672" y="154" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">Consumer Services</text>
+          <text x="672" y="169" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">재고 / 매장 / 알림</text>
+          <!-- Redis ZUNIONSTORE -->
+          <rect x="450" y="55" width="145" height="60" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="522" y="78" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Redis</text>
+          <text x="522" y="93" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">ZUNIONSTORE</text>
+          <text x="522" y="107" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">7일 슬라이딩 윈도우</text>
+          <!-- arrow order→redis -->
+          <line x1="248" y1="125" x2="450" y2="82" stroke="#4a4a6a" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#kc-arr-g)"/>
+          <!-- +80% label -->
+          <text x="522" y="200" text-anchor="middle" fill="#f0a500" font-size="14" font-weight="700" font-family="JetBrains Mono,monospace">+80%</text>
+          <text x="522" y="215" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">인기 메뉴 응답속도</text>
+        </svg>
+      </section>
+
       <!-- 핵심 기술 문제·해결 -->
       <section class="detail__block reveal" aria-labelledby="kcom-tech">
         <h2 id="kcom-tech" class="section-title">핵심 기술 문제 · 해결</h2>
