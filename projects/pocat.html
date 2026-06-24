@@ -42,13 +42,35 @@
           경매 입찰 동시성(Redisson tryLock), 결제 실패 복구(Redis Shadow Key), Outbox Relay 배치, n8n 기반 AI 로그 트리아지로 거래 안전성과 운영 관측성을 함께 구현했습니다.
           전체 1,047+ commits, 29개 ADR로 모든 기술 의사결정을 문서화했습니다.
         </p>
-        <div class="tag-list" style="margin-top:0.75rem;">
-          <a class="tag" href="https://github.com/POCAT-sparta/pocat" target="_blank" rel="noopener" style="text-decoration:none;">pocat (메인)</a>
-          <a class="tag" href="https://github.com/POCAT-sparta/pocat-front" target="_blank" rel="noopener" style="text-decoration:none;">pocat-front</a>
-          <a class="tag" href="https://github.com/POCAT-sparta/pocat-worker" target="_blank" rel="noopener" style="text-decoration:none;">pocat-worker</a>
-          <a class="tag" href="https://github.com/POCAT-sparta/pocat-batch" target="_blank" rel="noopener" style="text-decoration:none;">pocat-batch</a>
-          <a class="tag" href="https://github.com/POCAT-sparta/pocat-monitoring" target="_blank" rel="noopener" style="text-decoration:none;">ai-monitoring</a>
-        </div>
+        <table style="margin-top:0.75rem;width:100%;font-size:var(--fs-small);border-collapse:collapse;">
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:0.4rem 0;"><a href="https://github.com/POCAT-sparta/pocat" target="_blank" rel="noopener">pocat (메인)</a></td>
+              <td style="padding:0.4rem 0;color:var(--text-secondary);">경매·결제·AI API · Spring Boot 3.5</td>
+              <td style="padding:0.4rem 0;color:var(--text-secondary);text-align:right;">839 commits · 28 ADR</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:0.4rem 0;"><a href="https://github.com/POCAT-sparta/pocat-front" target="_blank" rel="noopener">pocat-front</a></td>
+              <td style="padding:0.4rem 0;color:var(--text-secondary);">프론트엔드 · React 18.3 + Vite 6.4</td>
+              <td style="padding:0.4rem 0;color:var(--text-secondary);text-align:right;">97 commits</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:0.4rem 0;"><a href="https://github.com/POCAT-sparta/pocat-worker" target="_blank" rel="noopener">pocat-worker</a></td>
+              <td style="padding:0.4rem 0;color:var(--text-secondary);">채팅·알림 (WebSocket+Kafka Consumer)</td>
+              <td style="padding:0.4rem 0;color:var(--text-secondary);text-align:right;">26 commits</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:0.4rem 0;"><a href="https://github.com/POCAT-sparta/pocat-batch" target="_blank" rel="noopener">pocat-batch</a></td>
+              <td style="padding:0.4rem 0;color:var(--text-secondary);">스케줄링 12개 Job · Spring Batch + ShedLock</td>
+              <td style="padding:0.4rem 0;color:var(--text-secondary);text-align:right;">60 commits · 1 ADR</td>
+            </tr>
+            <tr>
+              <td style="padding:0.4rem 0;"><a href="https://github.com/POCAT-sparta/pocat-monitoring" target="_blank" rel="noopener">ai-monitoring</a></td>
+              <td style="padding:0.4rem 0;color:var(--text-secondary);">Prometheus·Loki·Grafana·n8n(Gemini)</td>
+              <td style="padding:0.4rem 0;color:var(--text-secondary);text-align:right;">25 commits</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
       <!-- Tech Stack -->
@@ -57,18 +79,18 @@
         <div class="tag-list">
           <span class="tag">Java 17</span>
           <span class="tag">Spring Boot 3.5</span>
-          <span class="tag">Kafka</span>
-          <span class="tag">Redis (Redisson)</span>
-          <span class="tag">Elasticsearch</span>
-          <span class="tag">Spring AI (Gemini)</span>
-          <span class="tag">Resilience4j</span>
-          <span class="tag">MySQL</span>
+          <span class="tag">Kafka 3.7</span>
+          <span class="tag">Redis 7.2 (Redisson 3.37)</span>
+          <span class="tag">Elasticsearch 8.18</span>
+          <span class="tag">Spring AI 1.0 (Gemini)</span>
+          <span class="tag">Resilience4j 2.2</span>
+          <span class="tag">MySQL 8.0</span>
           <span class="tag">Flyway</span>
           <span class="tag">Spring Batch</span>
-          <span class="tag">ShedLock</span>
+          <span class="tag">ShedLock 6.6</span>
           <span class="tag">PortOne V2</span>
-          <span class="tag">React 18 / Vite</span>
-          <span class="tag">Tailwind / Radix UI</span>
+          <span class="tag">React 18.3 / Vite 6.4</span>
+          <span class="tag">Tailwind 4.1 / Radix UI</span>
           <span class="tag">WebSocket (STOMP)</span>
           <span class="tag">Prometheus / Loki / Grafana</span>
           <span class="tag">n8n</span>
