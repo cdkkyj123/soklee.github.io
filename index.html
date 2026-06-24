@@ -143,48 +143,48 @@
       </div>
     </section>
 
-    <!-- Section 4: Featured — Ready's7 -->
+    <!-- Section 4: Featured — POCAT -->
     <section class="section" id="featured">
       <div class="container">
         <span class="badge badge--featured">Featured</span>
-        <h2 class="section-title reveal">Ready's7</h2>
+        <h2 class="section-title reveal">POCAT</h2>
         <div class="featured__grid">
 
           <div class="featured__text reveal">
-            <p class="featured__role">팀 리더 · 백엔드 · 2026.04</p>
-            <p class="featured__desc">개발자와 클라이언트를 연결하는 프리랜서 매칭 플랫폼. 동시성 제어·검색 성능·실시간 채팅·무중단 배포를 직접 설계하고 정량 수치로 검증.</p>
+            <p class="featured__role">팀 리더 (5인) · 백엔드 · 2026.05~06 (6주)</p>
+            <p class="featured__desc">포켓몬 카드 C2C 경매 거래 플랫폼. 5개 레포 멀티 서비스 구조(메인·프론트·채팅·배치·모니터링)를 팀 리더로서 설계·완료. Redisson tryLock 입찰 동시성, PortOne V2 자동결제, n8n AI 로그 트리아지까지 구현.</p>
             <div class="tag-list">
               <span class="tag">Java 17</span>
               <span class="tag">Spring Boot</span>
-              <span class="tag">React / TS</span>
-              <span class="tag">MySQL</span>
+              <span class="tag">Kafka</span>
               <span class="tag">Redis (Redisson)</span>
-              <span class="tag">WebSocket</span>
-              <span class="tag">AWS</span>
+              <span class="tag">Elasticsearch</span>
+              <span class="tag">Spring AI</span>
+              <span class="tag">PortOne V2</span>
               <span class="tag">k6</span>
             </div>
             <div class="featured__cta">
-              <a class="btn btn--primary" href="./projects/readys7.html">자세히 보기 →</a>
-              <a class="btn btn--ghost" href="https://github.com/Ready-s7/Readys7-project" target="_blank" rel="noopener">GitHub →</a>
+              <a class="btn btn--primary" href="./projects/pocat.html">자세히 보기 →</a>
+              <a class="btn btn--ghost" href="https://github.com/POCAT-sparta/pocat" target="_blank" rel="noopener">GitHub →</a>
             </div>
           </div>
 
           <div class="featured__metrics">
             <div class="metric-card reveal">
-              <span class="metric mono">+74%</span>
-              <span class="metric__label">FULLTEXT 검색 성능 (230ms→56ms)</span>
+              <span class="metric mono">1,047+</span>
+              <span class="metric__label">commits — 5개 레포 멀티 서비스 (메인 839)</span>
             </div>
             <div class="metric-card reveal">
-              <span class="metric mono">100→10</span>
-              <span class="metric__label">k6 동시 100요청, 정확히 10건 승인·0건 초과 (Redisson tryLock)</span>
+              <span class="metric mono">29</span>
+              <span class="metric__label">ADR — 모든 기술 의사결정 문서화</span>
             </div>
             <div class="metric-card reveal">
-              <span class="metric mono">Zero</span>
-              <span class="metric__label">무중단 롤링 배포 (ALB + EC2×2)</span>
+              <span class="metric mono">244.9</span>
+              <span class="metric__label">RPS — k6 스파이크 0→100 VU, 에러율 0%</span>
             </div>
             <div class="metric-card reveal">
               <span class="metric mono">5인</span>
-              <span class="metric__label">팀 리더 · 전체 아키텍처 총괄</span>
+              <span class="metric__label">팀 리더 · 5개 레포 아키텍처 총괄</span>
             </div>
           </div>
 
@@ -198,24 +198,24 @@
         <h2 class="section-title reveal">Projects</h2>
         <div class="grid grid--2">
 
-          <!-- POCAT -->
+          <!-- Ready's7 -->
           <article class="card project reveal">
             <div class="project__head">
-              <h3>POCAT</h3>
+              <h3>Ready's7</h3>
               <span class="badge badge--done">완료</span>
-              <span style="font-size:var(--fs-small);color:var(--text-muted);">2026.05~06 (6주)</span>
+              <span style="font-size:var(--fs-small);color:var(--text-muted);">2026.04 (3주)</span>
             </div>
-            <p class="project__desc">포켓몬 카드 C2C 경매 거래 플랫폼. 5개 레포 멀티 서비스 구조(메인·프론트·채팅·배치·모니터링), Redisson tryLock 입찰 동시성, PortOne V2 자동결제, n8n AI 로그 트리아지.</p>
+            <p class="project__desc">개발자와 클라이언트를 연결하는 프리랜서 매칭 플랫폼. 동시성 제어·검색 성능·실시간 채팅·무중단 배포를 팀 리더로서 직접 설계하고 정량 수치로 검증.</p>
             <div class="tag-list">
+              <span class="tag">Java 17</span>
               <span class="tag">Spring Boot</span>
-              <span class="tag">Kafka</span>
-              <span class="tag">Elasticsearch</span>
-              <span class="tag">Spring AI</span>
+              <span class="tag">Redis (Redisson)</span>
+              <span class="tag">WebSocket</span>
             </div>
-            <div class="project__metrics">1,047+ commits · 29 ADR · 5개 레포</div>
+            <div class="project__metrics">+74% 검색성능 · Zero 무중단배포</div>
             <div class="project__links">
-              <a class="btn btn--ghost" href="./projects/pocat.html">자세히 →</a>
-              <a class="btn btn--ghost" href="https://github.com/POCAT-sparta/pocat" target="_blank" rel="noopener">GitHub</a>
+              <a class="btn btn--ghost" href="./projects/readys7.html">자세히 →</a>
+              <a class="btn btn--ghost" href="https://github.com/Ready-s7/Readys7-project" target="_blank" rel="noopener">GitHub</a>
             </div>
           </article>
 
