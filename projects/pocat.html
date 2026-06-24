@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="POCAT — 포켓몬 카드 C2C 경매 거래 플랫폼. Redisson tryLock 입찰 동시성, PortOne V2 빌링키 자동결제, Kafka 이벤트 드리븐, Resilience4j Circuit Breaker 상세 기술 설명">
+  <meta name="description" content="POCAT — 포켓몬 카드 C2C 경매 거래 플랫폼. 5개 레포 멀티 서비스 구조, Redisson tryLock 입찰 동시성, PortOne V2 자동결제, Kafka 이벤트 드리븐, n8n AI 로그 트리아지 상세 기술 설명">
   <meta property="og:title" content="POCAT | 이석형 (Sok) Portfolio">
-  <meta property="og:description" content="Kafka 이벤트 드리븐·Resilience4j·Spring AI(Gemini) 기반 포켓몬 카드 실시간 경매 플랫폼">
+  <meta property="og:description" content="5개 레포 멀티 서비스 구조로 완성한 포켓몬 카드 C2C 경매 거래 플랫폼 — Redisson·Kafka·PortOne V2·n8n AI 모니터링">
   <title>POCAT — 이석형 (Sok)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,9 +26,9 @@
 
       <!-- 헤더 -->
       <section class="detail__header reveal">
-        <h1>POCAT <span class="badge badge--wip">개발중</span></h1>
-        <p class="detail__role">팀 프로젝트 (rocketcrew) · 백엔드 · 2026.05.10 ~ 진행중</p>
-        <p class="detail__desc">포켓몬 카드 실시간 경매·거래 플랫폼 · Kafka 이벤트 드리븐 아키텍처</p>
+        <h1>POCAT <span class="badge badge--done">완료</span></h1>
+        <p class="detail__role">팀 프로젝트 (rocketcrew) · 백엔드 · 2026.05.10 ~ 2026.06.22 (6주)</p>
+        <p class="detail__desc">포켓몬 카드 C2C 경매 거래 플랫폼 · 5개 레포 멀티 서비스 구조</p>
         <a class="btn btn--ghost" href="https://github.com/POCAT-sparta/pocat" target="_blank" rel="noopener">GitHub →</a>
       </section>
 
@@ -38,96 +38,112 @@
         <p>
           포켓몬 카드 수집가들을 위한 C2C 경매 거래 플랫폼입니다.
           판매자가 카드를 배송하면 관리자 검수 후 경매가 등록되고, 구매자는 입찰 또는 즉시 구매로 낙찰 시 PortOne V2 빌링키 기반 자동결제가 실행됩니다.
-          경매 입찰 동시성(Redisson tryLock), 결제 실패 복구(Redis Shadow Key), Kafka 이벤트 드리븐 아키텍처로 거래 안전성을 구현했습니다.
-          현재 활발히 개발 진행 중인 프로젝트로, 662+ commits와 14개 ADR이 누적되어 있습니다.
+          메인 API(POCAT) · 프론트엔드(pocat-front) · 채팅·알림 서버(pocat-worker) · 배치 서버(pocat-batch) · 모니터링 플랫폼(ai-monitoring), 5개 레포로 구성된 멀티 서비스 구조로 6주간 팀 프로젝트를 완료했습니다.
+          경매 입찰 동시성(Redisson tryLock), 결제 실패 복구(Redis Shadow Key), Outbox Relay 배치, n8n 기반 AI 로그 트리아지로 거래 안전성과 운영 관측성을 함께 구현했습니다.
+          전체 1,047+ commits, 29개 ADR로 모든 기술 의사결정을 문서화했습니다.
         </p>
+        <div class="tag-list" style="margin-top:0.75rem;">
+          <a class="tag" href="https://github.com/POCAT-sparta/pocat" target="_blank" rel="noopener" style="text-decoration:none;">pocat (메인)</a>
+          <a class="tag" href="https://github.com/POCAT-sparta/pocat-front" target="_blank" rel="noopener" style="text-decoration:none;">pocat-front</a>
+          <a class="tag" href="https://github.com/POCAT-sparta/pocat-worker" target="_blank" rel="noopener" style="text-decoration:none;">pocat-worker</a>
+          <a class="tag" href="https://github.com/POCAT-sparta/pocat-batch" target="_blank" rel="noopener" style="text-decoration:none;">pocat-batch</a>
+          <a class="tag" href="https://github.com/POCAT-sparta/pocat-monitoring" target="_blank" rel="noopener" style="text-decoration:none;">ai-monitoring</a>
+        </div>
       </section>
 
       <!-- Tech Stack -->
       <section class="detail__block reveal" aria-labelledby="pocat-stack">
         <h2 id="pocat-stack" class="section-title">Tech Stack</h2>
         <div class="tag-list">
-          <span class="tag">Spring Boot</span>
+          <span class="tag">Java 17</span>
+          <span class="tag">Spring Boot 3.5</span>
           <span class="tag">Kafka</span>
-          <span class="tag">Redis</span>
+          <span class="tag">Redis (Redisson)</span>
           <span class="tag">Elasticsearch</span>
           <span class="tag">Spring AI (Gemini)</span>
           <span class="tag">Resilience4j</span>
           <span class="tag">MySQL</span>
-          <span class="tag">Docker</span>
-          <span class="tag">GitHub Actions</span>
-          <span class="tag">ECS (EC2)</span>
-          <span class="tag">ECR</span>
+          <span class="tag">Flyway</span>
+          <span class="tag">Spring Batch</span>
+          <span class="tag">ShedLock</span>
           <span class="tag">PortOne V2</span>
+          <span class="tag">React 18 / Vite</span>
+          <span class="tag">Tailwind / Radix UI</span>
+          <span class="tag">WebSocket (STOMP)</span>
+          <span class="tag">Prometheus / Loki / Grafana</span>
+          <span class="tag">n8n</span>
+          <span class="tag">ECS (EC2) / ECR</span>
+          <span class="tag">Docker</span>
           <span class="tag">Testcontainers</span>
-          <span class="tag">Prometheus/Grafana</span>
         </div>
       </section>
 
       <!-- 아키텍처 -->
       <section class="detail__block reveal" aria-labelledby="pocat-arch">
-        <h2 id="pocat-arch" class="section-title">시스템 아키텍처</h2>
-        <svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto;" role="img" aria-label="POCAT 시스템 아키텍처 다이어그램">
+        <h2 id="pocat-arch" class="section-title">시스템 아키텍처 — 5개 레포 멀티 서비스</h2>
+        <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto;" role="img" aria-label="POCAT 5개 레포 멀티 서비스 아키텍처 다이어그램">
           <defs>
             <marker id="pc-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f0a500"/></marker>
             <marker id="pc-arr-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a4a6a"/></marker>
           </defs>
-          <rect width="760" height="250" fill="#0f1626" rx="8"/>
-          <text x="380" y="22" text-anchor="middle" fill="#f0a500" font-size="11" font-weight="700" font-family="JetBrains Mono,monospace" letter-spacing="2">POCAT · ARCHITECTURE</text>
+          <rect width="760" height="230" fill="#0f1626" rx="8"/>
+          <text x="380" y="18" text-anchor="middle" fill="#f0a500" font-size="11" font-weight="700" font-family="JetBrains Mono,monospace" letter-spacing="2">POCAT · MULTI-SERVICE ARCHITECTURE</text>
+
           <!-- Client -->
-          <rect x="14" y="95" width="80" height="48" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
-          <text x="54" y="116" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Client</text>
-          <text x="54" y="131" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">경매 참가자</text>
-          <!-- arrow -->
-          <line x1="94" y1="119" x2="128" y2="119" stroke="#f0a500" stroke-width="1.5" marker-end="url(#pc-arr)"/>
-          <!-- API Gateway / Spring Boot -->
-          <rect x="128" y="80" width="120" height="78" rx="6" fill="#16213e" stroke="#f0a500" stroke-width="1.5"/>
-          <text x="188" y="105" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Spring Boot</text>
-          <text x="188" y="120" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">Auction API</text>
-          <text x="188" y="135" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">afterCommit</text>
-          <text x="188" y="148" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">이벤트 발행 순서 보장</text>
-          <!-- arrow to kafka -->
-          <line x1="248" y1="119" x2="290" y2="119" stroke="#f0a500" stroke-width="1.5" marker-end="url(#pc-arr)"/>
-          <!-- Kafka -->
-          <rect x="290" y="93" width="110" height="52" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
-          <text x="345" y="116" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">Kafka</text>
-          <text x="345" y="131" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">입찰→낙찰→알림 체인</text>
-          <!-- arrow kafka→consumers -->
-          <line x1="400" y1="119" x2="440" y2="100" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#pc-arr-g)"/>
-          <line x1="400" y1="119" x2="440" y2="140" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#pc-arr-g)"/>
-          <!-- Consumer 1 -->
-          <rect x="440" y="70" width="110" height="48" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
-          <text x="495" y="91" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">낙찰 처리</text>
-          <text x="495" y="106" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">결과 알림 · 정산 트리거</text>
-          <!-- Consumer 2 -->
-          <rect x="440" y="132" width="110" height="48" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
-          <text x="495" y="153" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">알림 서비스</text>
-          <text x="495" y="168" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">입찰자 · 판매자 알림</text>
-          <!-- Spring AI + Resilience4j -->
-          <rect x="128" y="185" width="175" height="52" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
-          <text x="215" y="207" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">Spring AI + Resilience4j</text>
-          <text x="215" y="221" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">Circuit Breaker</text>
-          <text x="215" y="232" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">Gemini API 장애 격리</text>
-          <!-- arrow spring ai→gemini -->
-          <line x1="303" y1="211" x2="340" y2="211" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#pc-arr-g)"/>
-          <!-- Gemini box -->
-          <rect x="340" y="193" width="100" height="38" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1"/>
-          <text x="390" y="210" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">Gemini API</text>
-          <text x="390" y="224" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">카드 시세 추정</text>
-          <!-- fallback -->
-          <text x="390" y="195" text-anchor="middle" fill="#9090a0" font-size="7" font-family="Inter,sans-serif">fallback → 추정 불가 반환</text>
-          <!-- Redis TTL + ShedLock -->
-          <rect x="580" y="80" width="160" height="90" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
-          <text x="660" y="104" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">경매 라이프사이클</text>
-          <text x="660" y="120" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">Redis TTL</text>
-          <text x="660" y="133" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">만료 감지 (1차)</text>
-          <text x="660" y="150" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">ShedLock Backup</text>
-          <text x="660" y="163" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">이중화 안전장치</text>
-          <!-- arrow kafka→lifecycle -->
-          <line x1="400" y1="119" x2="580" y2="119" stroke="#4a4a6a" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#pc-arr-g)"/>
-          <!-- 517 commits label -->
-          <text x="660" y="195" text-anchor="middle" fill="#f0a500" font-size="14" font-weight="700" font-family="JetBrains Mono,monospace">662+</text>
-          <text x="660" y="210" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">커밋 · 14 ADR</text>
+          <rect x="10" y="75" width="65" height="40" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="42" y="96" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">Client</text>
+          <text x="42" y="109" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">Web/Mobile</text>
+
+          <!-- pocat-front -->
+          <rect x="90" y="65" width="100" height="60" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="140" y="88" text-anchor="middle" fill="#f0f0f0" font-size="10" font-weight="600" font-family="Inter,sans-serif">pocat-front</text>
+          <text x="140" y="103" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">React 18 + Vite</text>
+          <text x="140" y="116" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">PortOne SDK</text>
+
+          <!-- POCAT main -->
+          <rect x="205" y="35" width="150" height="110" rx="6" fill="#16213e" stroke="#f0a500" stroke-width="1.5"/>
+          <text x="280" y="58" text-anchor="middle" fill="#f0a500" font-size="14" font-weight="700" font-family="JetBrains Mono,monospace">POCAT</text>
+          <text x="280" y="75" text-anchor="middle" fill="#f0f0f0" font-size="9" font-family="Inter,sans-serif">경매·결제·AI 메인 API</text>
+          <text x="280" y="91" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">Redisson tryLock</text>
+          <text x="280" y="106" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">PortOne V2 · Resilience4j</text>
+          <text x="280" y="130" text-anchor="middle" fill="#f0a500" font-size="11" font-weight="700" font-family="JetBrains Mono,monospace">839+ commits</text>
+          <text x="280" y="142" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">28 ADR</text>
+
+          <!-- pocat-worker -->
+          <rect x="375" y="35" width="115" height="45" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="432" y="55" text-anchor="middle" fill="#f0f0f0" font-size="9" font-weight="600" font-family="Inter,sans-serif">pocat-worker</text>
+          <text x="432" y="69" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">채팅·알림 (WebSocket)</text>
+
+          <!-- pocat-batch -->
+          <rect x="375" y="90" width="115" height="55" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="432" y="110" text-anchor="middle" fill="#f0f0f0" font-size="9" font-weight="600" font-family="Inter,sans-serif">pocat-batch</text>
+          <text x="432" y="124" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">Outbox Relay·경매만료</text>
+          <text x="432" y="136" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">ShedLock 분산 스케줄링</text>
+
+          <!-- ai-monitoring -->
+          <rect x="510" y="35" width="235" height="110" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="627" y="58" text-anchor="middle" fill="#f0f0f0" font-size="11" font-weight="600" font-family="Inter,sans-serif">ai-monitoring</text>
+          <text x="627" y="76" text-anchor="middle" fill="#a0a0b0" font-size="9" font-family="Inter,sans-serif">Prometheus · Loki</text>
+          <text x="627" y="91" text-anchor="middle" fill="#f0a500" font-size="8" font-family="JetBrains Mono,monospace">Grafana · n8n (Gemini)</text>
+          <text x="627" y="106" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">로그 자동 분류 → Slack</text>
+          <text x="627" y="124" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">[PAYMENT] [AUCTION] [AI]</text>
+          <text x="627" y="136" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">태그별 장애 트리아지</text>
+
+          <!-- 공유 인프라 -->
+          <rect x="205" y="167" width="285" height="48" rx="6" fill="#16213e" stroke="#2d2d44" stroke-width="1.5"/>
+          <text x="347" y="187" text-anchor="middle" fill="#a0a0b0" font-size="8" font-family="Inter,sans-serif">공유 인프라</text>
+          <text x="347" y="203" text-anchor="middle" fill="#f0f0f0" font-size="9" font-weight="600" font-family="Inter,sans-serif">MySQL · Redis · Kafka · Elasticsearch</text>
+
+          <!-- arrows -->
+          <line x1="75" y1="95" x2="90" y2="95" stroke="#f0a500" stroke-width="1.5" marker-end="url(#pc-arr)"/>
+          <line x1="190" y1="95" x2="205" y2="95" stroke="#f0a500" stroke-width="1.5" marker-end="url(#pc-arr)"/>
+          <line x1="355" y1="57" x2="375" y2="55" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#pc-arr-g)"/>
+          <text x="365" y="48" text-anchor="middle" fill="#9090a0" font-size="7" font-family="Inter,sans-serif">Kafka</text>
+          <line x1="355" y1="115" x2="375" y2="115" stroke="#4a4a6a" stroke-width="1.5" marker-end="url(#pc-arr-g)"/>
+          <text x="365" y="108" text-anchor="middle" fill="#9090a0" font-size="7" font-family="Inter,sans-serif">Internal API</text>
+          <line x1="280" y1="145" x2="280" y2="167" stroke="#4a4a6a" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#pc-arr-g)"/>
+          <line x1="355" y1="45" x2="510" y2="65" stroke="#4a4a6a" stroke-width="1" stroke-dasharray="1,3" marker-end="url(#pc-arr-g)"/>
+          <text x="440" y="40" text-anchor="middle" fill="#9090a0" font-size="7" font-family="Inter,sans-serif">메트릭 · 로그</text>
         </svg>
       </section>
 
@@ -146,7 +162,7 @@
           <h3>2. Kafka 이벤트 드리븐 + 트랜잭션 커밋 후 발행 순서 보장</h3>
           <p><strong>문제:</strong> 경매 입찰·낙찰·결제 처리 시 서비스 간 강한 결합으로 장애 전파. 또한 DB 트랜잭션 커밋 전 이벤트 발행 시 데이터 불일치 위험.</p>
           <p><strong>기술 선택:</strong> 경매 상태 변경을 Kafka 이벤트로 발행해 서비스 간 느슨한 결합 구현. 트랜잭션 커밋 후 이벤트 발행을 보장하기 위해 Spring의 TransactionSynchronization을 활용, afterCommit 훅에서 Kafka 발행 처리.</p>
-          <p><strong>결과:</strong> 서비스 간 결합도 감소. DB 커밋 전 이벤트 발행으로 인한 데이터 불일치 문제 제거. 입찰→낙찰→알림 이벤트 체인의 순서 보장. <em>트레이드오프:</em> afterCommit 훅 방식은 프로세스 크래시 시 이벤트 유실 가능성(Transactional Outbox 대비 내구성 낮음). 경매 이벤트 규모에서는 단순성을 우선했으며, 유실 방지가 중요한 결제/정산은 별도 보상 트랜잭션으로 처리.</p>
+          <p><strong>결과:</strong> 서비스 간 결합도 감소. DB 커밋 전 이벤트 발행으로 인한 데이터 불일치 문제 제거. 입찰→낙찰→알림 이벤트 체인의 순서 보장. <em>트레이드오프:</em> afterCommit 훅 방식은 프로세스 크래시 시 이벤트 유실 가능성(Transactional Outbox 대비 내구성 낮음). 이 한계는 이후 6번 챕터의 Outbox Relay 배치로 보완했습니다.</p>
         </article>
 
         <article class="chapter reveal">
@@ -159,34 +175,48 @@
         <article class="chapter reveal">
           <h3>4. Redis TTL + 백업 스케줄러 이중화 — 경매 라이프사이클 관리</h3>
           <p><strong>문제:</strong> 경매 종료 시점을 정확하게 처리해야 하나, Redis TTL 만료 알림만으로는 메시지 손실 위험. 단일 스케줄러는 서버 재시작 시 누락 가능.</p>
-          <p><strong>기술 선택:</strong> Redis TTL + Keyspace Notification으로 경매 만료 1차 감지. 백업 스케줄러(ShedLock)를 이중화해 Redis 이벤트 손실 시에도 DB 상태 조회로 만료된 경매를 추가 처리.</p>
-          <p><strong>결과:</strong> 경매 라이프사이클(생성→진행→종료→낙찰) 이중화로 단일 장애점 제거. 서버 재시작 후에도 누락된 경매 종료 처리 보장.</p>
+          <p><strong>기술 선택:</strong> Redis TTL + Keyspace Notification으로 경매 만료 1차 감지. 백업 스케줄러(<code>auctionExpirationJob</code>)를 <code>pocat-batch</code>에 ShedLock으로 이중화해 Redis 이벤트 손실 시에도 DB 상태 조회로 만료된 경매를 추가 처리.</p>
+          <p><strong>결과:</strong> 경매 라이프사이클(생성→진행→종료→낙찰) 이중화로 단일 장애점 제거. 운영 중 Redis Cluster sub-second TTL 잘림 버그를 발견해 keyspace 전체 만료 이벤트 감지 방식으로 수정.</p>
         </article>
 
         <article class="chapter reveal">
           <h3>5. PortOne V2 빌링키 + Redis Shadow Key — 결제 실패 복구</h3>
           <p><strong>문제:</strong> 낙찰 후 빌링키 자동결제가 실패했을 때 거래가 누락되면 판매자·구매자 모두 피해. 실패 탐지 타이밍과 재결제 허용 구간 관리가 필요.</p>
           <p><strong>기술 선택:</strong> 결제 실패 시 Redis Shadow Key를 설정(TTL=1시간). Shadow Key의 TTL 만료 이벤트(Keyspace Notification)를 감지해 '직접결제 가능 구간 종료'를 알림. 1시간 내 구매자가 직접결제하지 않으면 거래 취소 처리.</p>
-          <p><strong>결과:</strong> 자동결제 실패 시에도 거래 누락 없이 복구 플로우 보장. 비관적 락으로 동시 결제 중복 차단.</p>
+          <p><strong>결과:</strong> 자동결제 실패 시에도 거래 누락 없이 복구 플로우 보장. 비관적 락으로 동시 결제 중복 차단. 운영 중 2등 낙찰자 직접결제 처리 버그를 발견해 수정.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>6. Outbox Relay 배치화 — K-Com에서 얻은 교훈을 팀 프로젝트에 적용</h3>
+          <p><strong>문제:</strong> 메인 API 서버 안에서 Outbox Polling Publisher가 함께 실행되면 API 트래픽과 배치 부하가 같은 프로세스 자원을 경쟁하게 됩니다. 2번 챕터의 afterCommit 방식은 단순하지만 프로세스 크래시 시 이벤트 유실 위험이 남아있었습니다.</p>
+          <p><strong>기술 선택:</strong> Outbox Relay → Reaper → Cleanup 3단계 Step으로 구성된 Spring Batch Job을 <code>pocat-batch</code> 레포로 완전히 분리. Relay Step이 미발행 레코드를 Kafka로 발행하고, 실패 시 Reaper Step이 재시도 대상으로 회수, Cleanup Step이 처리 완료 레코드를 정리합니다.</p>
+          <p><strong>결과:</strong> API 서버와 배치 서버의 자원 경쟁 제거. 개인 프로젝트 K-Com에서 단일 서버로 탐구했던 Transactional Outbox 패턴을 멀티 인스턴스 배치 서버 규모로 확장 적용한 경험.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>7. n8n + Loki — 장애 로그 AI 자동 트리아지</h3>
+          <p><strong>문제:</strong> Prometheus 메트릭과 애플리케이션 로그가 분리되어 있어 장애 발생 시 원인 파악에 수동 로그 검색이 필요했습니다. 결제·경매·AI 등 서로 다른 담당 영역의 로그가 한 곳에 섞여 있어 알림 노이즈가 컸습니다.</p>
+          <p><strong>기술 선택:</strong> Loki로 로그를 ERROR/WARN/INFO 레벨과 태그(<code>[PAYMENT_ESCALATION]</code>, <code>[AUCTION_ANOMALY]</code>, <code>[CARD_SYNC]</code> 등)로 수집. Grafana Alert Rule이 LogQL 쿼리로 이상 패턴을 감지하면 n8n 워크플로우를 트리거하고, n8n이 관련 로그를 태그별로 그룹핑해 Gemini로 1차 원인 분석 후 태그별 Slack 채널로 전송.</p>
+          <p><strong>결과:</strong> 장애 발생 시 담당자가 로그를 직접 뒤지기 전에 AI 분석 결과가 먼저 전달됩니다. 결제·경매·AI 영역별로 알림이 자동 라우팅되어 책임 소재 파악 시간이 단축됩니다.</p>
         </article>
 
       </section>
 
-      <!-- 진행 현황 -->
+      <!-- 완료 현황 -->
       <section class="detail__block reveal" aria-labelledby="pocat-status">
-        <h2 id="pocat-status" class="section-title">진행 현황</h2>
+        <h2 id="pocat-status" class="section-title">완료 현황</h2>
         <div class="grid grid--2">
           <div class="metric-card reveal">
-            <span class="metric mono">662+</span>
-            <span class="metric__label">GitHub commits — 2026.05.10~ 활발히 개발 진행 중</span>
+            <span class="metric mono">1,047+</span>
+            <span class="metric__label">전체 5개 레포 commits 합계 (메인 839 · 프론트 97 · worker 26 · batch 60 · 모니터링 25)</span>
           </div>
           <div class="metric-card reveal">
-            <span class="metric mono">14</span>
-            <span class="metric__label">ADR(Architecture Decision Records) — 모든 기술 선택 근거 문서화</span>
+            <span class="metric mono">29</span>
+            <span class="metric__label">ADR — 메인 28 + batch 1, 모든 기술 의사결정 문서화</span>
           </div>
           <div class="metric-card reveal">
             <span class="metric mono">↓64%</span>
-            <span class="metric__label">스모크 p(95): 23.61ms → 8.47ms (k6 성능 개선 이력 06-01→06-02)</span>
+            <span class="metric__label">스모크 p(95): 23.61ms → 8.47ms (k6 성능 개선 이력)</span>
           </div>
           <div class="metric-card reveal">
             <span class="metric mono">244.9</span>
@@ -194,9 +224,8 @@
           </div>
         </div>
         <p class="current-status">
-          <strong>완료:</strong> Kafka 이벤트 파이프라인(입찰→낙찰→알림), 경매 라이프사이클(TTL 이중화), Spring AI Gemini 시세 추정, Resilience4j Circuit Breaker, 회원·카드 CRUD, Elasticsearch 검색·필터, PortOne V2 결제·정산<br>
-          <strong>진행 중:</strong> ECS 배포 환경 구성, Prometheus/Grafana 모니터링<br>
-          <strong>목표:</strong> 2026년 내 베타 배포
+          <strong>완료:</strong> 경매 입찰·낙찰(Redisson tryLock), PortOne V2 결제·정산, Spring AI Gemini 카드 분석, Elasticsearch 검색, Resilience4j 장애 격리, 채팅·알림(pocat-worker), Outbox Relay·스케줄링 배치(pocat-batch, 12개 Job), AI 로그 트리아지(ai-monitoring, n8n+Loki+Grafana), 프론트엔드(pocat-front, React 18)<br>
+          <strong>운영 중 발견·수정:</strong> Redis Cluster TTL sub-second 잘림 버그, 2등 낙찰자 직접결제 처리 버그, 카드 한글 이름 검색 정렬 성능 개선
         </p>
       </section>
 
@@ -205,13 +234,18 @@
         <h2 id="pocat-decisions" class="section-title">설계 결정</h2>
 
         <article class="chapter reveal">
-          <h3>왜 afterCommit 훅인가 — Transactional Outbox 대신</h3>
-          <p>Transactional Outbox 패턴은 내구성이 높지만 Outbox 테이블 관리·Polling Publisher 구현 복잡성이 추가됩니다. 경매 이벤트는 실시간성이 우선이고 낙찰·알림 유실 시 재시도 허용 설계(보상 로직 존재)로 단순성을 선택했습니다. 결제·정산처럼 절대 유실 불가 도메인은 별도 보상 트랜잭션으로 처리합니다.</p>
+          <h3>왜 멀티 레포로 분리했는가 — 채팅·배치를 메인 API에서 분리</h3>
+          <p>초기에는 단일 Spring Boot 애플리케이션에 경매·결제·채팅·스케줄러가 모두 포함되어 있었습니다. 채팅 WebSocket 연결이 늘어날수록 같은 프로세스의 경매·결제 API 응답 시간에 영향을 줄 위험이 있었고, <code>@Scheduled</code> 스케줄러는 인스턴스를 늘릴 때마다 중복 실행 문제가 생겼습니다. 채팅·알림을 <code>pocat-worker</code>, 스케줄링을 <code>pocat-batch</code>(ShedLock)로 분리해 각 영역이 독립적으로 장애 격리·스케일링되도록 했습니다. 완전한 MSA 전환보다는, 장애 영향 범위가 큰 영역부터 우선 분리하는 점진적 접근을 택했습니다.</p>
         </article>
 
         <article class="chapter reveal">
-          <h3>왜 Redis TTL + 백업 스케줄러 이중화인가</h3>
-          <p>경매 종료 이벤트를 단일 스케줄러에만 의존하면 서버 재시작 시 누락 가능성이 있습니다. Redis TTL Keyspace Notification은 즉시 트리거되지만 Redis 장애 시 손실됩니다. 두 방식을 이중화해 어느 한쪽이 실패해도 DB 상태 조회로 복구할 수 있게 했습니다. 단, 이중화로 인한 중복 처리를 막기 위해 경매 종료 처리에 DB 수준 상태 체크를 추가했습니다.</p>
+          <h3>왜 afterCommit 훅을 Outbox Relay 배치로 보완했는가</h3>
+          <p>afterCommit 훅은 구현이 단순하지만 프로세스 크래시 시 이벤트 유실 가능성이 있습니다. 처음엔 경매 이벤트의 실시간성을 우선해 단순성을 선택했지만, 결제·정산처럼 유실이 치명적인 흐름에는 Transactional Outbox가 필요했습니다. K-Com 개인 프로젝트에서 먼저 탐구한 Outbox 패턴을 <code>pocat-batch</code>의 Relay·Reaper·Cleanup 3단계 배치로 재구현해, API 서버 부하와 분리된 형태로 팀 프로젝트에 적용했습니다.</p>
+        </article>
+
+        <article class="chapter reveal">
+          <h3>왜 n8n으로 AI 로그 트리아지를 도입했는가</h3>
+          <p>Grafana Alert만으로는 "무엇이 위험하다"는 신호만 오고 "왜 위험한지"는 담당자가 직접 로그를 검색해야 했습니다. n8n으로 Grafana 알림 → Loki 로그 재조회 → Gemini 분석 → Slack 전송을 자동화해, 1차 원인 분석을 사람보다 먼저 받을 수 있게 했습니다. 결제·경매·AI 영역별 태그로 그룹핑해 무관한 담당자에게 알림이 가지 않도록 했습니다. 완전한 자동 복구보다는 "사람의 의사결정을 더 빠르게" 만드는 데 목적을 두었습니다.</p>
         </article>
 
         <article class="chapter reveal">
