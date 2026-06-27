@@ -36,10 +36,18 @@
       <section class="detail__block reveal" aria-labelledby="pocat-overview">
         <h2 id="pocat-overview" class="section-title">Overview</h2>
         <p>
-          포켓몬 카드 수집가들을 위한 C2C 경매 거래 플랫폼입니다.
-          판매자가 카드를 배송하면 관리자 검수 후 경매가 등록되고, 구매자는 입찰 또는 즉시 구매로 낙찰 시 PortOne V2 빌링키 기반 자동결제가 실행됩니다.
-          5인 팀 리더로서 메인 API(POCAT) · 프론트엔드(pocat-front) · 채팅·알림 서버(pocat-worker) · 배치 서버(pocat-batch) · 모니터링 플랫폼(ai-monitoring), 5개 레포로 구성된 멀티 서비스 구조를 6주간 설계·완료했습니다.
-          경매 입찰 동시성(Redisson tryLock), 결제 실패 복구(Redis Shadow Key), Outbox Relay 배치, n8n 기반 AI 로그 트리아지로 거래 안전성과 운영 관측성을 함께 구현했습니다.
+          포켓몬 카드 수집가들을 위한 C2C 경매 거래 플랫폼입니다.<br>
+          판매자가 카드를 배송하면 관리자 검수 후 경매가 등록되고,<br>
+          구매자는 입찰 또는 즉시 구매로 낙찰 시 <strong>PortOne V2</strong> 빌링키 기반 자동결제가 실행됩니다.
+        </p>
+        <p>
+          5인 팀 리더로서 메인 API · 프론트엔드 · 채팅·알림 서버 · 배치 서버 · 모니터링 플랫폼,<br>
+          5개 레포로 구성된 멀티 서비스 구조를 6주간 설계·완료했습니다.
+        </p>
+        <p>
+          <strong>Redisson tryLock</strong> 입찰 동시성 · <strong>Redis Shadow Key</strong> 결제 복구 ·
+          <strong>Outbox Relay</strong> 배치 · <strong>n8n</strong> AI 로그 트리아지로<br>
+          거래 안전성과 운영 관측성을 함께 구현했습니다.<br>
           전체 1,047+ commits, 29개 ADR로 모든 기술 의사결정을 문서화했습니다.
         </p>
         <table style="margin-top:0.75rem;width:100%;font-size:var(--fs-small);border-collapse:collapse;">
@@ -71,6 +79,20 @@
             </tr>
           </tbody>
         </table>
+      </section>
+
+      <!-- 담당 역할 -->
+      <section class="detail__block reveal" aria-labelledby="pocat-role">
+        <h2 id="pocat-role" class="section-title">담당 역할</h2>
+        <ul style="margin:0;padding-left:1.25rem;line-height:2.1;color:var(--text-secondary);">
+          <li><strong>프로젝트 관리</strong> — PR 리뷰 전담 · 브랜치 전략 수립</li>
+          <li><strong>백엔드 도메인</strong> — 유저 · 자유게시판 · 찜</li>
+          <li><strong>AI 기능</strong> — RAG · Tool Calling · SSE · ES Vector Store 임베딩</li>
+          <li><strong>캐싱 · 저장소</strong> — Redis 캐싱 설계 · Redis Cluster 약식 구현</li>
+          <li><strong>인프라 분리</strong> — Spring Batch 서버 분리 · RDS Write/Read Replica · Flyway 도입</li>
+          <li><strong>운영 자동화</strong> — n8n 모니터링 파이프라인 · 보안 점검</li>
+          <li><strong>성능 검증</strong> — k6 시나리오 11종 직접 설계</li>
+        </ul>
       </section>
 
       <!-- Tech Stack -->
@@ -176,42 +198,54 @@
         <article class="chapter reveal">
           <h3>1. Redis Redisson tryLock — 경매 입찰 동시성 제어</h3>
           <p><strong>문제:</strong> 동시에 여러 사용자가 같은 경매에 입찰할 때 중복 낙찰이 발생할 수 있고, DB 유니크 제약만으로는 레이스 컨디션을 완전히 차단하기 어렵습니다.</p>
-          <p><strong>기술 선택:</strong> Redisson <code>tryLock(waitTime=0)</code>으로 경매 ID를 키로 한 분산락 적용. waitTime=0이므로 락 획득 실패 시 즉시 실패 반환해 무한 대기 없이 동시 입찰 중 정확히 1건만 성공.</p>
-          <p><strong>결과:</strong> k6 30 VU 동시 입찰 테스트 — <code>concurrent_bid_successes = 1</code>. 결제 동시성 30 VU — Rate Limit(429) 20건 + 결제 생성 성공 10건, <code>confirmPayment</code>에서 비관적 락으로 중복 차단.</p>
+          <p><strong>기술 선택:</strong> <strong>Redisson</strong> <code>tryLock(waitTime=0)</code>으로 경매 ID를 키로 한 분산락 적용.<br>
+          <code>waitTime=0</code> → 락 획득 실패 시 즉시 반환, 무한 대기 없이 동시 입찰 중 정확히 1건만 성공.</p>
+          <p><strong>결과:</strong> k6 30 VU 동시 입찰 — <code>concurrent_bid_successes = 1</code> 달성.<br>
+          결제 동시성 30 VU → Rate Limit(429) 20건 + 결제 생성 10건, <code>confirmPayment</code>에서 비관적 락으로 중복 차단.</p>
         </article>
 
         <article class="chapter reveal">
           <h3>2. Kafka 이벤트 드리븐 + 트랜잭션 커밋 후 발행 순서 보장</h3>
           <p><strong>문제:</strong> 경매 입찰·낙찰·결제 처리 시 서비스 간 강한 결합으로 장애 전파. 또한 DB 트랜잭션 커밋 전 이벤트 발행 시 데이터 불일치 위험.</p>
-          <p><strong>기술 선택:</strong> 경매 상태 변경을 Kafka 이벤트로 발행해 서비스 간 느슨한 결합 구현. 트랜잭션 커밋 후 이벤트 발행을 보장하기 위해 Spring의 TransactionSynchronization을 활용, afterCommit 훅에서 Kafka 발행 처리.</p>
+          <p><strong>기술 선택:</strong> 경매 상태 변경을 <strong>Kafka</strong> 이벤트로 발행해 서비스 간 느슨한 결합 구현.<br>
+          트랜잭션 커밋 후 이벤트 발행을 보장하기 위해 Spring의 <strong>TransactionSynchronization</strong>을 활용,<br>
+          <code>afterCommit</code> 훅에서 Kafka 발행 처리.</p>
           <p><strong>결과:</strong> 서비스 간 결합도 감소. DB 커밋 전 이벤트 발행으로 인한 데이터 불일치 문제 제거. 입찰→낙찰→알림 이벤트 체인의 순서 보장. <em>트레이드오프:</em> afterCommit 훅 방식은 프로세스 크래시 시 이벤트 유실 가능성(Transactional Outbox 대비 내구성 낮음). 이 한계는 이후 6번 챕터의 Outbox Relay 배치로 보완했습니다.</p>
         </article>
 
         <article class="chapter reveal">
           <h3>3. Resilience4j Circuit Breaker — Gemini API 장애 격리</h3>
           <p><strong>문제:</strong> Spring AI(Gemini) 카드 가격 추정 API가 외부 의존성으로, 장애 발생 시 연쇄적으로 경매 생성 기능 전체가 중단될 위험.</p>
-          <p><strong>기술 선택:</strong> Resilience4j Circuit Breaker를 Gemini API 호출부에 적용. 장애 임계치(50% 실패 시 서킷 오픈) 설정, fallback으로 "가격 추정 불가" 기본값 반환해 경매 생성은 정상 진행.</p>
+          <p><strong>기술 선택:</strong> <strong>Resilience4j Circuit Breaker</strong>를 Gemini API 호출부에 적용.<br>
+          장애 임계치(50% 실패 시 서킷 오픈) 설정, fallback으로 "가격 추정 불가" 기본값 반환 → 경매 생성은 정상 진행.</p>
           <p><strong>결과:</strong> Gemini API 장애가 경매 생성 서비스로 전파되지 않아 핵심 기능 가용성 유지. 서킷 상태(오픈·클로즈드·반오픈)에 따른 자동 복구 동작 검증.</p>
         </article>
 
         <article class="chapter reveal">
           <h3>4. Redis TTL + 백업 스케줄러 이중화 — 경매 라이프사이클 관리</h3>
           <p><strong>문제:</strong> 경매 종료 시점을 정확하게 처리해야 하나, Redis TTL 만료 알림만으로는 메시지 손실 위험. 단일 스케줄러는 서버 재시작 시 누락 가능.</p>
-          <p><strong>기술 선택:</strong> Redis TTL + Keyspace Notification으로 경매 만료 1차 감지. 백업 스케줄러(<code>auctionExpirationJob</code>)를 <code>pocat-batch</code>에 ShedLock으로 이중화해 Redis 이벤트 손실 시에도 DB 상태 조회로 만료된 경매를 추가 처리.</p>
+          <p><strong>기술 선택:</strong> <strong>Redis TTL</strong> + Keyspace Notification으로 경매 만료 1차 감지.<br>
+          백업 스케줄러(<code>auctionExpirationJob</code>)를 <code>pocat-batch</code>에 <strong>ShedLock</strong>으로 이중화 →<br>
+          Redis 이벤트 손실 시에도 DB 상태 조회로 만료된 경매를 추가 처리.</p>
           <p><strong>결과:</strong> 경매 라이프사이클(생성→진행→종료→낙찰) 이중화로 단일 장애점 제거. 운영 중 Redis Cluster sub-second TTL 잘림 버그를 발견해 keyspace 전체 만료 이벤트 감지 방식으로 수정.</p>
         </article>
 
         <article class="chapter reveal">
           <h3>5. PortOne V2 빌링키 + Redis Shadow Key — 결제 실패 복구</h3>
           <p><strong>문제:</strong> 낙찰 후 빌링키 자동결제가 실패했을 때 거래가 누락되면 판매자·구매자 모두 피해. 실패 탐지 타이밍과 재결제 허용 구간 관리가 필요.</p>
-          <p><strong>기술 선택:</strong> 결제 실패 시 Redis Shadow Key를 설정(TTL=1시간). Shadow Key의 TTL 만료 이벤트(Keyspace Notification)를 감지해 '직접결제 가능 구간 종료'를 알림. 1시간 내 구매자가 직접결제하지 않으면 거래 취소 처리.</p>
+          <p><strong>기술 선택:</strong> 결제 실패 시 <strong>Redis Shadow Key</strong>를 설정(TTL=1시간).<br>
+          Shadow Key의 TTL 만료 이벤트(Keyspace Notification)를 감지 → '직접결제 가능 구간 종료' 알림.<br>
+          1시간 내 구매자가 직접결제하지 않으면 거래 취소 처리.</p>
           <p><strong>결과:</strong> 자동결제 실패 시에도 거래 누락 없이 복구 플로우 보장. 비관적 락으로 동시 결제 중복 차단. 운영 중 2등 낙찰자 직접결제 처리 버그를 발견해 수정.</p>
         </article>
 
         <article class="chapter reveal">
           <h3>6. Outbox Relay 배치화 — K-Com에서 얻은 교훈을 팀 프로젝트에 적용</h3>
           <p><strong>문제:</strong> 메인 API 서버 안에서 Outbox Polling Publisher가 함께 실행되면 API 트래픽과 배치 부하가 같은 프로세스 자원을 경쟁하게 됩니다. 2번 챕터의 afterCommit 방식은 단순하지만 프로세스 크래시 시 이벤트 유실 위험이 남아있었습니다.</p>
-          <p><strong>기술 선택:</strong> Outbox Relay → Reaper → Cleanup 3단계 Step으로 구성된 Spring Batch Job을 <code>pocat-batch</code> 레포로 완전히 분리. Relay Step이 미발행 레코드를 Kafka로 발행하고, 실패 시 Reaper Step이 재시도 대상으로 회수, Cleanup Step이 처리 완료 레코드를 정리합니다.</p>
+          <p><strong>기술 선택:</strong> Outbox Relay → Reaper → Cleanup 3단계 Step으로 구성된 <strong>Spring Batch</strong> Job을 <code>pocat-batch</code> 레포로 완전히 분리.<br>
+          Relay Step: 미발행 레코드를 Kafka로 발행<br>
+          Reaper Step: 실패 시 재시도 대상으로 회수<br>
+          Cleanup Step: 처리 완료 레코드 정리</p>
           <p><strong>결과:</strong> API 서버와 배치 서버의 자원 경쟁 제거. 개인 프로젝트 K-Com에서 단일 서버로 탐구했던 Transactional Outbox 패턴을 멀티 인스턴스 배치 서버 규모로 확장 적용한 경험.</p>
         </article>
 
@@ -245,10 +279,15 @@
             <span class="metric__label">RPS — 스파이크 0→100 VU, p(95)=6.5ms, 에러율 0%</span>
           </div>
         </div>
-        <p class="current-status">
-          <strong>완료:</strong> 경매 입찰·낙찰(Redisson tryLock), PortOne V2 결제·정산, Spring AI Gemini 카드 분석, Elasticsearch 검색, Resilience4j 장애 격리, 채팅·알림(pocat-worker), Outbox Relay·스케줄링 배치(pocat-batch, 12개 Job), AI 로그 트리아지(ai-monitoring, n8n+Loki+Grafana), 프론트엔드(pocat-front, React 18)<br>
-          <strong>운영 중 발견·수정:</strong> Redis Cluster TTL sub-second 잘림 버그, 2등 낙찰자 직접결제 처리 버그, 카드 한글 이름 검색 정렬 성능 개선
-        </p>
+        <div class="current-status">
+          <p><strong>완료:</strong><br>
+          경매 입찰·낙찰 (Redisson tryLock) · PortOne V2 결제·정산 · Spring AI Gemini 카드 분석<br>
+          Elasticsearch 검색 · Resilience4j 장애 격리 · 채팅·알림 (pocat-worker)<br>
+          Outbox Relay·스케줄링 배치 (pocat-batch, 12개 Job) · AI 로그 트리아지 (ai-monitoring)<br>
+          프론트엔드 (pocat-front, React 18)</p>
+          <p><strong>운영 중 발견·수정:</strong><br>
+          Redis Cluster TTL sub-second 잘림 버그 · 2등 낙찰자 직접결제 처리 버그 · 카드 한글 이름 검색 정렬 성능 개선</p>
+        </div>
       </section>
 
       <!-- 설계 결정 -->

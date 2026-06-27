@@ -36,10 +36,31 @@
       <section class="detail__block reveal" aria-labelledby="r7-overview">
         <h2 id="r7-overview" class="section-title">Overview</h2>
         <p>
-          "준비된 전문가와 클라이언트를 잇는 가장 견고한 기술 가교" — 개발자와 클라이언트를 연결하는 프리랜서 매칭 플랫폼으로, 프로젝트 등록·개발자 제안·실시간 채팅·리뷰를 하나의 서비스에서 처리합니다.
-          5인 팀 리더로서 전체 아키텍처 설계와 기술 선택, 코드 리뷰, AWS 배포 파이프라인을 총괄했습니다.
-          동시성 제어, 검색 성능, 실시간 채팅, 무중단 배포 네 가지 핵심 기술 문제를 직접 정의하고 정량 수치로 검증해 해결했습니다.
+          "준비된 전문가와 클라이언트를 잇는 가장 견고한 기술 가교" — 개발자와 클라이언트를 연결하는 프리랜서 매칭 플랫폼으로,<br>
+          프로젝트 등록 · 개발자 제안 · 실시간 채팅 · 리뷰를 하나의 서비스에서 처리합니다.
         </p>
+        <p>
+          5인 팀 리더로서 전체 아키텍처 설계와 기술 선택, 코드 리뷰, AWS 배포 파이프라인을 총괄했습니다.<br>
+          동시성 제어 · 검색 성능 · 실시간 채팅 · 무중단 배포,<br>
+          네 가지 핵심 기술 문제를 직접 정의하고 정량 수치로 검증해 해결했습니다.
+        </p>
+      </section>
+
+      <!-- 담당 역할 -->
+      <section class="detail__block reveal" aria-labelledby="r7-role">
+        <h2 id="r7-role" class="section-title">담당 역할</h2>
+        <ul style="margin:0;padding-left:1.25rem;line-height:2.1;color:var(--text-secondary);">
+          <li><strong>프로젝트 관리</strong> — PR 리뷰 전담 · 브랜치 전략 수립</li>
+          <li><strong>백엔드 도메인</strong> — 채팅 · 채팅방 · 제안서 · 스킬</li>
+          <li><strong>공통 인프라</strong> — 글로벌 응답/에러 규격화 · JWT 재발급 처리</li>
+          <li><strong>통합 검색</strong> — MySQL FULLTEXT + ngram, v1→v5 반복 개선</li>
+          <li><strong>인기 검색어</strong> — Redis Sorted Set(ZSET) 랭킹 집계</li>
+          <li><strong>캐싱 설계</strong> — Caffeine 로컬 캐시 → Redis 분산 캐시 전환 결정</li>
+          <li><strong>동시성 제어</strong> — Lettuce → Redisson 전환 · AOP 계층 분리</li>
+          <li><strong>코드 품질</strong> — AOP 검증 로직 중복 제거</li>
+          <li><strong>성능 검증</strong> — k6 성능 · 캐시 무효화 테스트</li>
+          <li><strong>배포 · 프론트</strong> — 배포환경 리팩토링 · 프론트엔드 연결 전담</li>
+        </ul>
       </section>
 
       <!-- Tech Stack -->
@@ -143,15 +164,22 @@
         <article class="chapter reveal">
           <h3>1. 동시성 제어 — Redisson tryLock</h3>
           <p><strong>문제:</strong> 인기 프로젝트에 동시 지원 요청이 몰릴 때 중복 승인이 발생. 모집 정원(10명)을 초과하는 Race Condition이 확인됨.</p>
-          <p><strong>기술 선택:</strong> DB 비관적 락 대비 네트워크 오버헤드가 적은 Redis Redisson tryLock 선택. waitTime 3초, leaseTime 5초로 설정해 락 취득 실패 시 즉시 반환하여 대기 없이 처리.</p>
-          <p><strong>결과:</strong> k6 VU=100 동시 요청 부하 테스트(AWS 배포 환경, ALB + EC2 × 2) 시 정확히 10건만 승인, 중복 승인 0건 달성. Redis 단일 노드 페일오버 리스크에 대비해 DB proposals 테이블에 unique constraint를 최종 방어선으로 병행 적용.</p>
+          <p><strong>기술 선택:</strong> DB 비관적 락 대비 네트워크 오버헤드가 적은 <strong>Redis Redisson tryLock</strong> 선택.<br>
+          waitTime 3초, leaseTime 5초 설정 → 락 취득 실패 시 즉시 반환, 대기 없이 처리.</p>
+          <p><strong>결과:</strong> k6 VU=100 동시 요청(AWS 배포 환경, ALB + EC2 × 2) — 정확히 10건만 승인, 중복 승인 0건 달성.<br>
+          Redis 단일 노드 페일오버 리스크 대비 → DB proposals 테이블에 unique constraint를 최종 방어선으로 병행 적용.</p>
           <div class="metric mono">동시 100요청 → 정확히 10건 승인</div>
         </article>
 
         <article class="chapter reveal">
           <h3>2. 검색 성능 — MySQL FULLTEXT + ngram 파서</h3>
           <p><strong>문제:</strong> 기존 LIKE '%키워드%' 쿼리로 230ms 소요. 5만 건 이상 더미 데이터 환경에서 검색 기능이 느려 채용 담당자 사용성이 저하됨.</p>
-          <p><strong>기술 선택:</strong> ① EXPLAIN 실행 계획 분석으로 기존 쿼리 병목 확인 후 B-Tree 인덱스 최적화. ② MySQL FULLTEXT 인덱스에 ngram 파서(최소 토큰 2자)를 적용해 한글 검색 지원. ③ 검색 API 캐싱으로 Caffeine(로컬 캐시) 먼저 적용했으나, EC2 2대 다중 서버 환경에서 인스턴스 간 캐시 불일치 문제 발생 → Redis 분산 캐시로 전환해 모든 인스턴스가 동일 캐시를 공유하도록 해결. Elasticsearch 도입 대비 기존 인프라 재사용으로 운영 복잡성 최소화.</p>
+          <p><strong>기술 선택:</strong><br>
+          ① EXPLAIN 실행 계획 분석으로 기존 쿼리 병목 확인 후 B-Tree 인덱스 최적화<br>
+          ② <strong>MySQL FULLTEXT</strong> 인덱스에 <strong>ngram</strong> 파서(최소 토큰 2자)를 적용해 한글 검색 지원<br>
+          ③ 검색 API 캐싱으로 <strong>Caffeine</strong>(로컬 캐시) 먼저 적용했으나, EC2 2대 환경에서 인스턴스 간 캐시 불일치 발생<br>
+          　→ <strong>Redis</strong> 분산 캐시로 전환, 모든 인스턴스가 동일 캐시 공유하도록 해결<br>
+          Elasticsearch 도입 대비 기존 인프라 재사용으로 운영 복잡성 최소화.</p>
           <p><strong>결과:</strong> k6 VU=50 부하 테스트(AWS RDS MySQL 8.0, 50,000건 더미 데이터 기반) 230ms → 56ms 검증, 검색 성능 +74% 향상. FULLTEXT 인덱스 warm-up 후 측정.</p>
           <div class="metric mono">230ms → 56ms (+74%)</div>
         </article>
@@ -159,14 +187,18 @@
         <article class="chapter reveal">
           <h3>3. 실시간 채팅 — WebSocket (STOMP) + Redis Pub/Sub</h3>
           <p><strong>문제:</strong> 폴링 방식의 높은 서버 부하와 메시지 지연 문제. 수평 확장 시 서버 간 메시지 전달 보장이 필요.</p>
-          <p><strong>기술 선택:</strong> WebSocket + STOMP 프로토콜로 실시간 양방향 통신 구현. Redis Pub/Sub을 메시지 브로커로 활용해 다중 서버 인스턴스 간 메시지 동기화.</p>
-          <p><strong>결과:</strong> 폴링 완전 제거, 실시간 메시지 전달 구현, EC2 2대 수평 확장 환경에서도 서버 간 메시지 라우팅 보장. 채팅 내역은 DB에 영속화하고 Cursor-based Pagination으로 과거 메시지를 효율적으로 조회(Offset 방식 대비 페이지 이동 시 데이터 누락 방지). <em>한계:</em> Redis Pub/Sub은 영속성을 제공하지 않으므로 오프라인 구간 메시지는 DB 조회로 보완.</p>
+          <p><strong>기술 선택:</strong> <strong>WebSocket + STOMP</strong> 프로토콜로 실시간 양방향 통신 구현.<br>
+          <strong>Redis Pub/Sub</strong>을 메시지 브로커로 활용해 다중 서버 인스턴스 간 메시지 동기화.</p>
+          <p><strong>결과:</strong> 폴링 완전 제거, 실시간 메시지 전달 구현, EC2 2대 환경에서도 서버 간 메시지 라우팅 보장.<br>
+          채팅 내역은 DB에 영속화 + Cursor-based Pagination으로 과거 메시지 효율적 조회(Offset 방식 대비 데이터 누락 방지).<br>
+          <em>한계:</em> Redis Pub/Sub은 영속성을 제공하지 않으므로 오프라인 구간 메시지는 DB 조회로 보완.</p>
         </article>
 
         <article class="chapter reveal">
           <h3>4. 무중단 배포 — AWS ALB 롤링 배포 (EC2×2)</h3>
           <p><strong>문제:</strong> 코드 배포 시 서비스 중단(다운타임) 발생. 운영 중 배포 불가.</p>
-          <p><strong>기술 선택:</strong> AWS ALB(Application Load Balancer) + EC2 2대로 롤링 배포 구성. ALB가 App2로 트래픽 유지 중 App1을 Docker로 업데이트·재기동, 완료 후 양쪽 서빙으로 전환 뒤 App2 순차 업데이트 방식.</p>
+          <p><strong>기술 선택:</strong> <strong>AWS ALB</strong>(Application Load Balancer) + EC2 2대로 롤링 배포 구성.<br>
+          ALB가 App2로 트래픽 유지 → App1 Docker 업데이트·재기동 → 양쪽 서빙 전환 → App2 순차 업데이트.</p>
           <p><strong>결과:</strong> Zero downtime 달성. 배포 중 서비스 중단 없이 운영 가능.</p>
           <div class="metric mono">Zero downtime — 롤링 배포</div>
         </article>
@@ -174,7 +206,9 @@
         <article class="chapter reveal">
           <h3>5. 고급 검색 — QueryDSL + Redis Sorted Set 인기 검색어</h3>
           <p><strong>문제:</strong> 기술 스택·지역·별점 등 다중 조건 검색을 동적으로 조합해야 하며, 자주 조회되는 인기 검색어를 실시간으로 집계해 UX를 개선해야 함.</p>
-          <p><strong>기술 선택:</strong> QueryDSL로 타입 안전한 동적 쿼리 조합 구현(null 조건 자동 제외). 인기 검색어는 Redis Sorted Set(ZADD·ZINCRBY)으로 실시간 점수 누적, ZREVRANGE로 Top-10 랭킹 조회. 검색 API 응답은 Redis 분산 캐시로 중복 DB 조회 제거(Caffeine 로컬 캐시 적용 후 다중 서버 불일치 문제로 Redis 전환).</p>
+          <p><strong>기술 선택:</strong> <strong>QueryDSL</strong>로 타입 안전한 동적 쿼리 조합 구현(null 조건 자동 제외).<br>
+          인기 검색어는 <strong>Redis Sorted Set</strong>(ZADD·ZINCRBY)으로 실시간 점수 누적, ZREVRANGE로 Top-10 랭킹 조회.<br>
+          검색 API 응답은 Redis 분산 캐시로 중복 DB 조회 제거(Caffeine 로컬 캐시 적용 후 다중 서버 불일치로 Redis 전환).</p>
           <p><strong>결과:</strong> 다중 조건 조합 검색 쿼리 타입 안전성 확보. 인기 검색어 랭킹 실시간 반영, 반복 검색 요청의 DB 조회 없이 캐시 응답 처리.</p>
         </article>
 
